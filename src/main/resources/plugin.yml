@@ -1,0 +1,10 @@
+name: Claims
+version: ${project.version}
+main: claims.Main
+api-version: 1.18
+authors: [ Mason ]
+description: Claims Plugin
+website: Masonking.dev
+commands:
+  claim:
+    description: "Main claims command"
