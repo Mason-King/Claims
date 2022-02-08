@@ -2,6 +2,7 @@ package claims;
 
 
 import claims.Commands.ClaimCommand;
+import claims.Listener.PlayerMove;
 import claims.Objects.Claim;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -31,6 +32,8 @@ public final class Main extends JavaPlugin {
         saveResource("claims.yml", false);
 
         load();
+
+        this.getServer().getPluginManager().registerEvents(new PlayerMove(), this);
 
     }
 
@@ -81,7 +84,6 @@ public final class Main extends JavaPlugin {
             int chunkZ = config.getInt("claims." + key + ".chunkZ");
 
             Claim claim = new Claim(id, ownerId, world, ownerName, chunkX, chunkZ);
-            System.out.println(claim.getId());
 
         });
     }

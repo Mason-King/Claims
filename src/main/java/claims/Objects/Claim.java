@@ -31,6 +31,8 @@ public class Claim {
 
     //List of all current claims!
     public static Map<Integer, Claim> claims = new HashMap<>();
+    public static Map<Chunk, Claim> chunkToClaims = new HashMap<>();
+    public static Map<UUID, List<Claim>> playerClaims = new HashMap<>();
 
     public Claim(int id, UUID owner, World world, String ownerName, int chunkX, int chunkZ) {
         this.id = id;
@@ -41,6 +43,12 @@ public class Claim {
 
         this.chunk = world.getChunkAt(chunkX, chunkZ);
         this.chunkLocation = new Location(world, chunkX, world.getHighestBlockYAt(chunkX, chunkZ), chunkZ);
+
+        claims.put(id, this);
+        chunkToClaims.put(chunk, this);
+        List<Claim> temp = playerClaims.containsKey(id) ? playerClaims.get(id) : new ArrayList<>();
+        temp.add(this);
+        playerClaims.put(owner, temp);
     }
 
     public Claim(Player owner, Location loc) {
@@ -52,10 +60,54 @@ public class Claim {
         this.chunkZ = chunk.getZ();
         this.id = claims.size() + 1;
         claims.put(claims.size() + 1, this);
+        chunkToClaims.put(chunk, this);
+        List<Claim> temp = playerClaims.containsKey(id) ? playerClaims.get(id) : new ArrayList<>();
+        temp.add(this);
+        playerClaims.put(owner.getUniqueId(), temp);
+    }
+
+    public static List<Claim> getClaims(Player p) {
+        return playerClaims.get(p.getUniqueId());
+    }
+
+    public void banClaims(Player target) {
+        for(Claim claim : playerClaims.get(owner)) {
+            if(claim.isBanned(target)) continue;
+            claim.banPlayer(target);
+        }
+    }
+
+    public static Claim getClaimAt(World world, int x, int z) {
+        Chunk c = world.getChunkAt(x, z);
+        return chunkToClaims.get(c);
+    }
+
+    public void unbanClaims(Player target) {
+        for(Claim claim : playerClaims.get(owner)) {
+            if(!claim.isBanned(target)) continue;
+            claim.unbanPlayer(target);
+        }
     }
 
     public void banPlayer(Player p) {
         banned.add(p.getUniqueId().toString());
+        banClaims(p);
+    }
+
+    public boolean isBanned(Player p) {
+        if(banned.contains(p.getUniqueId().toString())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isTrusted(Player p) {
+        if(trusted.contains(p.getUniqueId().toString())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean unbanPlayer(Player p) {
