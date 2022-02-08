@@ -40,7 +40,7 @@ public class Claim {
         this.ownerName = ownerName;
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
-
+        this.world = world;
         this.chunk = world.getChunkAt(chunkX, chunkZ);
         this.chunkLocation = new Location(world, chunkX, world.getHighestBlockYAt(chunkX, chunkZ), chunkZ);
 

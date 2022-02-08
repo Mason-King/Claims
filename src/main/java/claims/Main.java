@@ -2,6 +2,7 @@ package claims;
 
 
 import claims.Commands.ClaimCommand;
+import claims.Listener.BlockBreak;
 import claims.Listener.PlayerMove;
 import claims.Objects.Claim;
 import org.bukkit.Bukkit;
@@ -34,6 +35,7 @@ public final class Main extends JavaPlugin {
         load();
 
         this.getServer().getPluginManager().registerEvents(new PlayerMove(), this);
+        this.getServer().getPluginManager().registerEvents(new BlockBreak(), this);
 
     }
 
@@ -54,7 +56,6 @@ public final class Main extends JavaPlugin {
         if(Claim.claims == null) return;
         for(Map.Entry e : Claim.claims.entrySet()) {
             Claim claim = (Claim) e.getValue();
-
 
             config.set("claims." + claim.getId() + ".owner", claim.getOwner().toString());
             config.set("claims." + claim.getId() + ".ownerName", claim.getOwnerName());
