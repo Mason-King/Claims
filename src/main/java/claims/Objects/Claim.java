@@ -1,10 +1,7 @@
 package claims.Objects;
 
 import claims.Main;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -21,6 +18,7 @@ public class Claim {
     private UUID owner;
     private String ownerName;
     private Chunk chunk;
+    private World world;
     private Location chunkLocation;
     private int chunkX;
     private int chunkZ;
@@ -34,11 +32,22 @@ public class Claim {
     //List of all current claims!
     public static Map<Integer, Claim> claims = new HashMap<>();
 
+    public Claim(int id, UUID owner, World world, String ownerName, int chunkX, int chunkZ) {
+        this.id = id;
+        this.owner = owner;
+        this.ownerName = ownerName;
+        this.chunkX = chunkX;
+        this.chunkZ = chunkZ;
+
+        this.chunk = world.getChunkAt(chunkX, chunkZ);
+        this.chunkLocation = new Location(world, chunkX, world.getHighestBlockYAt(chunkX, chunkZ), chunkZ);
+    }
 
     public Claim(Player owner, Location loc) {
         this.owner = owner.getUniqueId();
         this.ownerName = owner.getName();
         this.chunk = loc.getChunk();
+        this.world = loc.getWorld();
         this.chunkX = chunk.getX();
         this.chunkZ = chunk.getZ();
         this.id = claims.size() + 1;
@@ -67,6 +76,14 @@ public class Claim {
             return true;
         }
         return false;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public void setWorld(World world) {
+        this.world = world;
     }
 
     public UUID getOwner() {
