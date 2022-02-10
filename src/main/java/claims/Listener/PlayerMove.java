@@ -13,9 +13,6 @@ public class PlayerMove implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
-
-        if(e.getFrom().getX() != e.getTo().getX() || e.getFrom().getZ() != e.getTo().getZ()) return;
-
         if(!Claim.chunkToClaims.containsKey(e.getTo().getChunk())) return;
         Claim claim = Claim.chunkToClaims.get(e.getTo().getChunk());
 

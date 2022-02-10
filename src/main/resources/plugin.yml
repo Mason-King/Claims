@@ -8,3 +8,5 @@ website: Masonking.dev
 commands:
   claim:
     description: "Main claims command"
+  unclaim:
+    description: "Command to unclaim land"

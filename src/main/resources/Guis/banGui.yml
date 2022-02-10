@@ -1,0 +1,26 @@
+title: "&lClaim bans"
+size: 45
+format:
+  - '! ! ! ! ! ! ! ! !'
+  - '! # # # # # # # !'
+  - '! # # # # # # # !'
+  - '! # # # # # # # !'
+  - '! ! ! ! ! ! ! ! !'
+
+defaultHead: "GenGummy"
+
+
+# '#' will automatically fill with player bans
+items:
+  '!':
+    material: BLACK_STAINED_GLASS_PANE
+    name: ""
+    lore: ""
+
+banItem:
+  material: PLAYER_HEAD
+  name: "&c&l{player}"
+  lore:
+    - "&7{player} is currently &c&lBanned!"
+    - ""
+    - "&7&o(( Click to unban ))"

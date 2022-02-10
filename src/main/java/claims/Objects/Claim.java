@@ -24,7 +24,7 @@ public class Claim {
     private int chunkZ;
 
     //variable to know if it needs to be saved to help optimize!
-    private boolean needsSaved = false;
+    private boolean unclaimed = false;
     //Manage the players
     public List<String> banned = new ArrayList<>();
     public List<String> trusted = new ArrayList<>();
@@ -34,7 +34,7 @@ public class Claim {
     public static Map<Chunk, Claim> chunkToClaims = new HashMap<>();
     public static Map<UUID, List<Claim>> playerClaims = new HashMap<>();
 
-    public Claim(int id, UUID owner, World world, String ownerName, int chunkX, int chunkZ) {
+    public Claim(int id, UUID owner, World world, String ownerName, int chunkX, int chunkZ, List<String> banned, List<String> trusted) {
         this.id = id;
         this.owner = owner;
         this.ownerName = ownerName;
@@ -43,6 +43,8 @@ public class Claim {
         this.world = world;
         this.chunk = world.getChunkAt(chunkX, chunkZ);
         this.chunkLocation = new Location(world, chunkX, world.getHighestBlockYAt(chunkX, chunkZ), chunkZ);
+        this.banned = banned;
+        this.trusted = trusted;
 
         claims.put(id, this);
         chunkToClaims.put(chunk, this);
@@ -118,6 +120,20 @@ public class Claim {
         return false;
     }
 
+    public void trustClaims(Player target) {
+        for(Claim claim : playerClaims.get(owner)) {
+            if(claim.isTrusted(target)) continue;
+            claim.trustPlayer(target);
+        }
+    }
+
+    public void untrustClaims(Player target) {
+        for(Claim claim : playerClaims.get(owner)) {
+            if(!claim.isTrusted(target)) continue;
+            claim.unTrust(target);
+        }
+    }
+
     public void trustPlayer(Player p) {
         trusted.add(p.getUniqueId().toString());
     }
@@ -190,12 +206,19 @@ public class Claim {
         this.chunkZ = chunkZ;
     }
 
-    public boolean isNeedsSaved() {
-        return needsSaved;
+    public boolean isUnclaimed() {
+        return unclaimed;
     }
 
-    public void setNeedsSaved(boolean needsSaved) {
-        this.needsSaved = needsSaved;
+    public void setUnclaimed(Boolean b) {
+        claims.remove(this.id);
+        chunkToClaims.remove(this.chunk);
+        List<Claim> temp = playerClaims.containsKey(id) ? playerClaims.get(id) : new ArrayList<>();
+        temp.remove(this);
+        playerClaims.remove(owner);
+        playerClaims.put(owner, temp);
+
+        this.unclaimed = b;
     }
 
 }
