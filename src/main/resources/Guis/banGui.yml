@@ -7,9 +7,6 @@ format:
   - '! # # # # # # # !'
   - '! ! ! ! ! ! ! ! !'
 
-defaultHead: "GenGummy"
-
-
 # '#' will automatically fill with player bans
 items:
   '!':

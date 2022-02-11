@@ -53,7 +53,11 @@ public class BlockBreak implements Listener {
         Player target = (Player) e.getEntity();
         Player damager = (Player) e.getDamager();
 
-        if(target.getLocation().getChunk())
+        Chunk chunk = target.getWorld().getChunkAt(target.getLocation().getBlockX(), target.getLocation().getBlockZ());
+
+        if(!Claim.chunkToClaims.containsKey(chunk)) {
+
+        }
 
     }
 

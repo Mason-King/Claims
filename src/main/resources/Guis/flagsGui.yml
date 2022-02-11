@@ -1,0 +1,30 @@
+title: "&lClaim flags"
+size: 27
+format:
+  - '! ! ! ! ! ! ! ! !'
+  - '! ! # ! ! ! $ ! !'
+  - '! ! ! ! ! ! ! ! !'
+
+visitor: 11
+trusted: 15
+
+# '#' will automatically fill with player bans
+items:
+  '!':
+    material: BLACK_STAINED_GLASS_PANE
+    name: ""
+    lore: ""
+  '#':
+    material: IRON_INGOT
+    name: "&c&lVisitor Permissions"
+    lore:
+      - "&7Manage visitor permission"
+      - ""
+      - "&7&o(( Click to edit ))"
+  '$':
+    material: DIAMOND
+    name: "&c&lTrusted Permissions"
+    lore:
+      - "&7Manage trusted permission"
+      - ""
+      - "&7&o(( Click to edit ))"

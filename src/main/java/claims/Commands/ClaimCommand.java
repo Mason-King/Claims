@@ -1,6 +1,7 @@
 package claims.Commands;
 
 import claims.Gui.Guis.BanGui;
+import claims.Gui.Guis.flagsGui;
 import claims.Objects.Claim;
 import claims.Utils.Utils;
 import org.bukkit.Bukkit;
@@ -81,6 +82,8 @@ public class ClaimCommand implements CommandExecutor {
                 Claim claim = Claim.getClaims(p).get(0);
                 claim.untrustClaims(target);
                 p.sendMessage(Utils.color("&c&lClaims &7| You have trusted x to your claims!"));
+            } else if(args[0].equalsIgnoreCase("flags")) {
+                new flagsGui().gui().show(p);
             }
         }
         return false;

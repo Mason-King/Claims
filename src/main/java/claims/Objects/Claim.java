@@ -29,6 +29,20 @@ public class Claim {
     public List<String> banned = new ArrayList<>();
     public List<String> trusted = new ArrayList<>();
 
+    //flags - default for visitiors
+    private boolean visitorBlockBreak = false;
+    private boolean visitorBlockPlace = false;
+    private boolean visitorOpenChest = false;
+    private boolean visitorOpenDoor = false;
+    private boolean visitorUse = false;
+
+    //flags - default for trusted
+    private boolean trustedBlockBreak = true;
+    private boolean trustedBlockPlace = true;
+    private boolean trustedOpenChest = false;
+    private boolean trustedOpenDoor = false;
+    private boolean trustedUse = true;
+
     //List of all current claims!
     public static Map<Integer, Claim> claims = new HashMap<>();
     public static Map<Chunk, Claim> chunkToClaims = new HashMap<>();
@@ -221,4 +235,83 @@ public class Claim {
         this.unclaimed = b;
     }
 
+    public boolean isVisitorBlockBreak() {
+        return visitorBlockBreak;
+    }
+
+    public void setVisitorBlockBreak(boolean visitorBlockBreak) {
+        this.visitorBlockBreak = visitorBlockBreak;
+    }
+
+    public boolean isVisitorBlockPlace() {
+        return visitorBlockPlace;
+    }
+
+    public void setVisitorBlockPlace(boolean visitorBlockPlace) {
+        this.visitorBlockPlace = visitorBlockPlace;
+    }
+
+    public boolean isVisitorOpenChest() {
+        return visitorOpenChest;
+    }
+
+    public void setVisitorOpenChest(boolean visitorOpenChest) {
+        this.visitorOpenChest = visitorOpenChest;
+    }
+
+    public boolean isVisitorOpenDoor() {
+        return visitorOpenDoor;
+    }
+
+    public void setVisitorOpenDoor(boolean visitorOpenDoor) {
+        this.visitorOpenDoor = visitorOpenDoor;
+    }
+
+    public boolean isVisitorUse() {
+        return visitorUse;
+    }
+
+    public void setVisitorUse(boolean visitorUse) {
+        this.visitorUse = visitorUse;
+    }
+
+    public boolean isTrustedBlockBreak() {
+        return trustedBlockBreak;
+    }
+
+    public void setTrustedBlockBreak(boolean trustedBlockBreak) {
+        this.trustedBlockBreak = trustedBlockBreak;
+    }
+
+    public boolean isTrustedBlockPlace() {
+        return trustedBlockPlace;
+    }
+
+    public void setTrustedBlockPlace(boolean trustedBlockPlace) {
+        this.trustedBlockPlace = trustedBlockPlace;
+    }
+
+    public boolean isTrustedOpenChest() {
+        return trustedOpenChest;
+    }
+
+    public void setTrustedOpenChest(boolean trustedOpenChest) {
+        this.trustedOpenChest = trustedOpenChest;
+    }
+
+    public boolean isTrustedOpenDoor() {
+        return trustedOpenDoor;
+    }
+
+    public void setTrustedOpenDoor(boolean trustedOpenDoor) {
+        this.trustedOpenDoor = trustedOpenDoor;
+    }
+
+    public boolean isTrustedUse() {
+        return trustedUse;
+    }
+
+    public void setTrustedUse(boolean trustedUse) {
+        this.trustedUse = trustedUse;
+    }
 }
