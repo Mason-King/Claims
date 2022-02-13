@@ -14,16 +14,23 @@ public class visitorFlagsGui {
 
     Main main = Main.getInstance();
 
+    //TODO:
+    // - Make it so you can click to toggle
+    // - Make flags persist
+    // - Add flag checks
+    // - Add check if claready claims!
+    // - add pages to bans
+
     private File file = new File(main.getDataFolder().getAbsolutePath() + "/Guis/visitorFlagsGui.yml");
     private YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
     public Gui gui(Player p) {
-        Gui flagsGui = new Gui(Utils.color(config.getString("title")), config.getInt("size")).c();
+        Gui flagGui = new Gui(Utils.color(config.getString("title")), config.getInt("size")).c();
 
         List<String> format = config.getStringList("format");
-        Utils.makeFormat(p, "visitor", config, flagsGui, format, "items");
+        Utils.makeFormat(p, "visitor", config, flagGui, format, "items");
 
-        flagsGui.onClick(e -> {
+        flagGui.onClick(e -> {
             Player player = (Player) e.getWhoClicked();
             int slot = e.getSlot();
             int place = config.getInt("place");
@@ -36,43 +43,44 @@ public class visitorFlagsGui {
 
             if(slot == place) {
                 if(c.isVisitorBlockPlace()) {
-                    c.setVisitorBlockPlace(false);
+                    c.visitorBlockPlace(false);
                 } else {
-                    c.setVisitorBlockPlace(true);
+                    c.visitorBlockPlace(true);
                 }
-                updateGui(p, config, flagsGui, format, "items");
+                updateGui(p, config, flagGui, format, "items");
             } else if(slot == breakInt) {
                 if(c.isVisitorBlockBreak()) {
-                    c.setVisitorBlockBreak(false);
+                    c.visitorBlockBreak(false);
                 } else {
-                    c.setVisitorBlockBreak(true);
+                    c.visitorBlockBreak(true);
                 }
-                updateGui(p, config, flagsGui, format, "items");
+                updateGui(p, config, flagGui, format, "items");
             } else if(slot == chest) {
                 if(c.isVisitorOpenChest()) {
-                    c.setVisitorOpenChest(false);
+                    c.visitorChestOpen(false);
                 } else {
-                    c.setVisitorOpenChest(true);
+                    c.visitorChestOpen(true);
                 }
-                updateGui(p, config, flagsGui, format, "items");
+                updateGui(p, config, flagGui, format, "items");
             } else if(slot == use) {
                 if(c.isVisitorUse()) {
-                    c.setVisitorUse(false);
+                    c.visitorUse(false);
                 } else {
-                    c.setVisitorUse(true);
+                    c.visitorUse(true);
                 }
-                updateGui(p, config, flagsGui, format, "items");
+                updateGui(p, config, flagGui, format, "items");
             } else if(slot == door) {
                 if(c.isVisitorOpenDoor()) {
-                    c.setVisitorOpenDoor(false);
+                    c.visitorDoorOpen(false);
                 } else {
-                    c.setVisitorOpenDoor(true);
+                    c.visitorDoorOpen(true);
                 }
-                updateGui(p, config, flagsGui, format, "items");
+                updateGui(p, config, flagGui, format, "items");
             }
         });
 
-        return flagsGui;
+        return flagGui;
+
     }
 
     public void updateGui(Player p, YamlConfiguration config, Gui gui, List<String> format, String key) {

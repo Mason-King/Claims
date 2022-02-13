@@ -75,8 +75,9 @@ public class Claim {
 
         claims.put(id, this);
         chunkToClaims.put(chunk, this);
-        List<Claim> temp = playerClaims.containsKey(id) ? playerClaims.get(id) : new ArrayList<>();
+        List<Claim> temp = playerClaims.containsKey(owner) ? playerClaims.get(owner) : new ArrayList<>();
         temp.add(this);
+        playerClaims.remove(owner);
         playerClaims.put(owner, temp);
     }
 
@@ -90,9 +91,11 @@ public class Claim {
         this.id = claims.size() + 1;
         claims.put(claims.size() + 1, this);
         chunkToClaims.put(chunk, this);
-        List<Claim> temp = playerClaims.containsKey(id) ? playerClaims.get(id) : new ArrayList<>();
+        List<Claim> temp = playerClaims.containsKey(owner) ? playerClaims.get(owner) : new ArrayList<>();
         temp.add(this);
         playerClaims.put(owner.getUniqueId(), temp);
+
+        syncFlags();
     }
 
     public static List<Claim> getClaims(Player p) {
@@ -109,6 +112,26 @@ public class Claim {
     public static Claim getClaimAt(World world, int x, int z) {
         Chunk c = world.getChunkAt(x, z);
         return chunkToClaims.get(c);
+    }
+
+    public void syncFlags() {
+        Claim mainClaim = playerClaims.get(owner).get(0);
+        for(Claim c : playerClaims.get(owner)) {
+            c.setVisitorUse(visitorUse);
+            c.setVisitorOpenDoor(mainClaim.visitorOpenDoor);
+            c.setVisitorOpenChest(mainClaim.visitorOpenChest);
+            c.setVisitorBlockBreak(mainClaim.visitorBlockBreak);
+            c.setVisitorBlockPlace(mainClaim.visitorBlockPlace);
+
+            c.setTrustedOpenDoor(mainClaim.trustedOpenDoor);
+            c.setTrustedOpenChest(mainClaim.trustedOpenChest);
+            c.setTrustedBlockPlace(mainClaim.trustedBlockPlace);
+            c.setTrustedUse(mainClaim.trustedUse);
+            c.setTrustedBlockBreak(mainClaim.trustedBlockBreak);
+
+            System.out.println(mainClaim.isVisitorBlockBreak());
+            System.out.println(c.isVisitorBlockBreak());
+        }
     }
 
     public void unbanClaims(Player target) {
@@ -246,6 +269,67 @@ public class Claim {
         playerClaims.put(owner, temp);
 
         this.unclaimed = b;
+    }
+
+    public void visitorBlockBreak(Boolean b) {
+        for(Claim c : playerClaims.get(owner)) {
+            c.setVisitorBlockBreak(b);
+        }
+    }
+
+    public void visitorBlockPlace(Boolean b) {
+        for(Claim c : playerClaims.get(owner)) {
+            c.setVisitorBlockPlace(b);
+        }
+    }
+
+    public void visitorChestOpen(Boolean b) {
+        for(Claim c : playerClaims.get(owner)) {
+            c.setVisitorOpenChest(b);
+        }
+    }
+
+    public void visitorDoorOpen(Boolean b) {
+        for(Claim c : playerClaims.get(owner)) {
+            c.setVisitorOpenDoor(b);
+        }
+    }
+
+    public void visitorUse(Boolean b) {
+        for(Claim c : playerClaims.get(owner)) {
+            c.setVisitorUse(b);
+        }
+    }
+
+    public void trustedBlockBreak(Boolean b) {
+        System.out.println(playerClaims.get(owner));
+        for(Claim c : playerClaims.get(owner)) {
+            c.setTrustedBlockBreak(b);
+        }
+    }
+
+    public void trustedBlockPlace(Boolean b) {
+        for(Claim c : playerClaims.get(owner)) {
+            c.setTrustedBlockPlace(b);
+        }
+    }
+
+    public void trustedChestOpen(Boolean b) {
+        for(Claim c : playerClaims.get(owner)) {
+            c.setTrustedOpenChest(b);
+        }
+    }
+
+    public void trustedDoorOpen(Boolean b) {
+        for(Claim c : playerClaims.get(owner)) {
+            c.setTrustedOpenDoor(b);
+        }
+    }
+
+    public void trustedUse(Boolean b) {
+        for(Claim c : playerClaims.get(owner)) {
+            c.setTrustedUse(b);
+        }
     }
 
     public boolean isVisitorBlockBreak() {

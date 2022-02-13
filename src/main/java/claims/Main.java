@@ -127,6 +127,8 @@ public final class Main extends JavaPlugin {
             Claim claim = new Claim(id, ownerId, world, ownerName, chunkX, chunkZ, banned, trusted, visitorBlockBreak, visitorBlockPlace, visitorUse, visitorChestOpen, visitorDoorOpen, trustedBlockBreak, trustedBlockPlace, trustedChestOpen, trustedDoorOpen, trustedUse);
 
         });
+
+        System.out.println(Claim.playerClaims);
     }
 
 }

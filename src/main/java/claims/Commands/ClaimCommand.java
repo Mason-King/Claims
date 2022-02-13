@@ -21,6 +21,12 @@ public class ClaimCommand implements CommandExecutor {
         if(!(sender instanceof Player)) return false;
         Player p = (Player) sender;
         if(args.length == 0) {
+            Chunk c = p.getWorld().getChunkAt(p.getLocation());
+            if(Claim.chunkToClaims.containsKey(c)) {
+                p.sendMessage(Utils.color("&c&lClaims &7| This chunk is already claimed!"));
+
+                return false;
+            }
             Claim claim = new Claim(p, p.getLocation());
             p.sendMessage(Utils.color("&c&lClaims &7| You have just claimed a chunk of land!"));
             p.playEffect(EntityEffect.FIREWORK_EXPLODE);

@@ -1,4 +1,4 @@
-title: "&lClaim flags"
+title: "&lVisitor flags"
 size: 27
 format:
   - '! ! ! ! ! ! ! ! !'
@@ -22,7 +22,7 @@ items:
     flag: PLACE
     name: "&c&lBlock Place"
     lore:
-      - "&7Allow visitors players to"
+      - "&7Allow visitor players to"
       - "&7place blocks inside your claim"
       - ""
       - "&c&lStatus&7: {status}"
@@ -33,7 +33,7 @@ items:
     flag: BREAK
     name: "&c&lBlock Break"
     lore:
-      - "&7Allow visitors players to"
+      - "&7Allow visitor players to"
       - "&7break blocks inside your claim"
       - ""
       - "&c&lStatus&7: {status}"
@@ -41,10 +41,10 @@ items:
       - "&7&o(( Click to change ))"
   '$':
     material: CHEST
-    flat: CHEST
+    flag: CHEST
     name: "&c&lOpen Chest"
     lore:
-      - "&7Allow visitors players to"
+      - "&7Allow visitor players to"
       - "&7open chests inside your claim"
       - ""
       - "&c&lStatus&7: {status}"
@@ -55,7 +55,7 @@ items:
     flag: USE
     name: "&c&lUse"
     lore:
-      - "&7Allow visitors players to"
+      - "&7Allow visitor players to"
       - "&7use inside your claim"
       - ""
       - "&c&lStatus&7: {status}"
@@ -66,7 +66,7 @@ items:
     flag: DOOR
     name: "&c&lUse Doors"
     lore:
-      - "&7Allow visitors players to"
+      - "&7Allow visitor players to"
       - "&7use doors inside your claim"
       - ""
       - "&c&lStatus&7: {status}"

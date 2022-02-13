@@ -18,6 +18,8 @@ public class trustedFlagsGui {
     // - Make it so you can click to toggle
     // - Make flags persist
     // - Add flag checks
+    // - Add check if claready claims!
+    // - add pages to bans
 
     private File file = new File(main.getDataFolder().getAbsolutePath() + "/Guis/trustedFlagsGui.yml");
     private YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
@@ -41,37 +43,37 @@ public class trustedFlagsGui {
 
             if(slot == place) {
                 if(c.isTrustedBlockPlace()) {
-                    c.setTrustedBlockPlace(false);
+                    c.trustedBlockPlace(false);
                 } else {
-                    c.setTrustedBlockPlace(true);
+                    c.trustedBlockPlace(true);
                 }
                 updateGui(p, config, flagGui, format, "items");
             } else if(slot == breakInt) {
                 if(c.isTrustedBlockBreak()) {
-                    c.setTrustedBlockBreak(false);
+                    c.trustedBlockBreak(false);
                 } else {
-                    c.setTrustedBlockBreak(true);
+                    c.trustedBlockBreak(true);
                 }
                 updateGui(p, config, flagGui, format, "items");
             } else if(slot == chest) {
                 if(c.isTrustedOpenChest()) {
-                    c.setTrustedOpenChest(false);
+                    c.trustedChestOpen(false);
                 } else {
-                    c.setTrustedOpenChest(true);
+                    c.trustedChestOpen(true);
                 }
                 updateGui(p, config, flagGui, format, "items");
             } else if(slot == use) {
                 if(c.isTrustedUse()) {
-                    c.setTrustedUse(false);
+                    c.trustedUse(false);
                 } else {
-                    c.setTrustedUse(true);
+                    c.trustedUse(true);
                 }
                 updateGui(p, config, flagGui, format, "items");
             } else if(slot == door) {
                 if(c.isTrustedOpenDoor()) {
-                    c.setTrustedOpenDoor(false);
+                    c.trustedDoorOpen(false);
                 } else {
-                    c.setTrustedOpenDoor(true);
+                    c.trustedDoorOpen(true);
                 }
                 updateGui(p, config, flagGui, format, "items");
             }

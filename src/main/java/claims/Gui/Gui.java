@@ -474,6 +474,7 @@ public class Gui implements Listener {
                     p.updateInventory();
                 }
                 if (this.cancel) {
+                    System.out.println("Canceled the click!");
                     e.setCancelled(true);
                     p.updateInventory();
                 }
