@@ -4,7 +4,13 @@ format:
   - '! ! ! ! ! ! ! ! !'
   - '! ! # @ $ % * ! !'
   - '! ! ! ! ! ! ! ! !'
-  -
+
+place: 11
+break: 12
+chest: 13
+use: 14
+door: 15
+
 # '#' will automatically fill with player bans
 items:
   '!':

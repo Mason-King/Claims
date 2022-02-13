@@ -17,8 +17,7 @@ public class flagsGui {
     private YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
     public Gui gui() {
-        Gui flagGui = new Gui(Utils.color(config.getString("title")), config.getInt("size"))
-                .c();
+        Gui flagGui = new Gui(Utils.color(config.getString("title")), config.getInt("size")).c();
 
         List<String> format = config.getStringList("format");
         Utils.makeFormat(config, flagGui, format, "items");

@@ -76,6 +76,18 @@ public final class Main extends JavaPlugin {
             config.set("claims." + claim.getId() + ".bans", claim.banned);
             config.set("claims." + claim.getId() + ".trusted", claim.trusted);
 
+            config.set("claims." + claim.getId() + ".trustedBlockBreak", claim.isTrustedBlockBreak());
+            config.set("claims." + claim.getId() + ".trustedBlockPlace", claim.isTrustedBlockPlace());
+            config.set("claims." + claim.getId() + ".trustedUse", claim.isTrustedUse());
+            config.set("claims." + claim.getId() + ".trustedChestOpen", claim.isTrustedOpenChest());
+            config.set("claims." + claim.getId() + ".trustedDoorOpen", claim.isTrustedOpenDoor());
+
+            config.set("claims." + claim.getId() + ".visitorBlockBreak", claim.isVisitorBlockBreak());
+            config.set("claims." + claim.getId() + ".visitorBlockPlace", claim.isVisitorBlockPlace());
+            config.set("claims." + claim.getId() + ".visitorUse", claim.isVisitorUse());
+            config.set("claims." + claim.getId() + ".visitorChestOpen", claim.isVisitorOpenChest());
+            config.set("claims." + claim.getId() + ".visitorDoorOpen", claim.isVisitorOpenDoor());
+
         }
 
         try {
@@ -100,7 +112,19 @@ public final class Main extends JavaPlugin {
             List<String> banned = config.getStringList("claims." + key + ".bans");
             List<String> trusted = config.getStringList("claims." + key + ".trusted");
 
-            Claim claim = new Claim(id, ownerId, world, ownerName, chunkX, chunkZ, banned, trusted);
+            Boolean visitorBlockBreak = config.getBoolean("claims." + key + ".visitorBlockBreak");
+            Boolean visitorBlockPlace = config.getBoolean("claims." + key + ".visitorBlockPlace");
+            Boolean visitorUse = config.getBoolean("claims." + key + ".visitorUse");
+            Boolean visitorChestOpen = config.getBoolean("claims." + key + ".visitorChestOpen");
+            Boolean visitorDoorOpen = config.getBoolean("claims." + key + ".visitorDoorOpen");
+
+            Boolean trustedBlockBreak = config.getBoolean("claims." + key + ".trustedBlockBreak");
+            Boolean trustedBlockPlace = config.getBoolean("claims." + key + ".trustedBlockPlace");
+            Boolean trustedUse = config.getBoolean("claims." + key + ".trustedUse");
+            Boolean trustedChestOpen = config.getBoolean("claims." + key + ".trustedChestOpen");
+            Boolean trustedDoorOpen = config.getBoolean("claims." + key + ".trustedDoorOpen");
+
+            Claim claim = new Claim(id, ownerId, world, ownerName, chunkX, chunkZ, banned, trusted, visitorBlockBreak, visitorBlockPlace, visitorUse, visitorChestOpen, visitorDoorOpen, trustedBlockBreak, trustedBlockPlace, trustedChestOpen, trustedDoorOpen, trustedUse);
 
         });
     }

@@ -48,7 +48,8 @@ public class Claim {
     public static Map<Chunk, Claim> chunkToClaims = new HashMap<>();
     public static Map<UUID, List<Claim>> playerClaims = new HashMap<>();
 
-    public Claim(int id, UUID owner, World world, String ownerName, int chunkX, int chunkZ, List<String> banned, List<String> trusted) {
+    public Claim(int id, UUID owner, World world, String ownerName, int chunkX, int chunkZ, List<String> banned, List<String> trusted, boolean visitorBlockBreak, boolean visitorBlockPlace, boolean visitorUse, boolean visitorOpenChest, boolean visitorOpenDoor,
+                 boolean trustedBlockBreak, boolean trustedBlockPlace, boolean trustedOpenChest, boolean trustedOpenDoor, boolean trustedUse) {
         this.id = id;
         this.owner = owner;
         this.ownerName = ownerName;
@@ -59,6 +60,18 @@ public class Claim {
         this.chunkLocation = new Location(world, chunkX, world.getHighestBlockYAt(chunkX, chunkZ), chunkZ);
         this.banned = banned;
         this.trusted = trusted;
+
+        this.visitorBlockBreak = visitorBlockBreak;
+        this.visitorBlockPlace = visitorBlockPlace;
+        this.visitorUse = visitorUse;
+        this.visitorOpenChest = visitorOpenChest;
+        this.visitorOpenDoor = visitorOpenDoor;
+
+        this.trustedBlockBreak = trustedBlockBreak;
+        this.trustedBlockPlace = trustedBlockPlace;
+        this.trustedUse = trustedUse;
+        this.trustedOpenChest = trustedOpenChest;
+        this.trustedOpenDoor = trustedOpenDoor;
 
         claims.put(id, this);
         chunkToClaims.put(chunk, this);
