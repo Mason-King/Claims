@@ -20,6 +20,7 @@ public class BlockBreak implements Listener {
     public void onBreak(BlockBreakEvent e) {
         Player p = (Player) e.getPlayer();
 
+
         Chunk c = e.getBlock().getChunk();
 
         Claim claim = Claim.getClaimAt(p.getWorld(), c.getX(), c.getZ());

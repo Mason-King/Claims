@@ -1,7 +1,9 @@
 package claims.Commands;
 
+import Events.LandClaimEvent;
 import claims.Gui.Guis.BanGui;
 import claims.Gui.Guis.flagsGui;
+import claims.Main;
 import claims.Objects.Claim;
 import claims.Utils.Utils;
 import org.bukkit.Bukkit;
@@ -30,6 +32,10 @@ public class ClaimCommand implements CommandExecutor {
             Claim claim = new Claim(p, p.getLocation());
             p.sendMessage(Utils.color("&c&lClaims &7| You have just claimed a chunk of land!"));
             p.playEffect(EntityEffect.FIREWORK_EXPLODE);
+
+            LandClaimEvent landClaimEvent = new LandClaimEvent(claim.getId(), p, claim.getChunkX(), claim.getChunkZ(), claim);
+            Bukkit.getPluginManager().callEvent(landClaimEvent);
+
             return false;
         } else {
             if(args[0].equalsIgnoreCase("help")) {
@@ -90,6 +96,59 @@ public class ClaimCommand implements CommandExecutor {
                 p.sendMessage(Utils.color("&c&lClaims &7| You have trusted x to your claims!"));
             } else if(args[0].equalsIgnoreCase("flags")) {
                 new flagsGui().gui().show(p);
+            } else if(args[0].equalsIgnoreCase("admin")) {
+                if(!p.hasPermission("claims.admin")) {
+                    p.sendMessage(Utils.color("&c&lClaims &7| Sorry, you do not have enough permission for this!"));
+                    return false;
+                } else {
+                    if(args[1].equalsIgnoreCase("remove")) {
+                        if(args.length < 3) {
+                            p.sendMessage(Utils.color("&c&lClaims &7| incorrect usage try : /claim admin remove <player>"));
+                            return false;
+                        } else {
+                            if(Bukkit.getPlayer(args[0]) == null) {
+                                p.sendMessage(Utils.color("&c&lClaims &7| Invalid player!"));
+                                return false;
+                            } else {
+                                Player target = Bukkit.getPlayer(args[0]);
+                                List<Claim> claims  = Claim.getClaims(target.getPlayer());
+                                for(Claim claim : claims) {
+                                    claim.setUnclaimed(true);
+                                }
+                                p.sendMessage(Utils.color("&c&lClaims &7| You have unclaimed all of x's claims!"));
+                                return false;
+                            }
+                        }
+                    } else if(args[1].equalsIgnoreCase("unclaim")) {
+                        Chunk c = p.getLocation().getWorld().getChunkAt(p.getLocation());
+
+                        Claim claim = Claim.chunkToClaims.get(c);
+
+                        if(claim == null) {
+                            p.sendMessage(Utils.color("&c&lClaims &7| Noone has claimed this land yet!"));
+                            return false;
+                        }
+
+                        claim.setUnclaimed(true);
+
+                        p.sendMessage(Utils.color("&c&lClaims &7| You have unclaimed the land you are standing in"));
+                    } else if(args[1].equalsIgnoreCase("claim")) {
+                        if(args.length < 3) {
+                            p.sendMessage(Utils.color("&c&lClaims &7| Incorrect usage : try /claims admin claim <player>"));
+                            return false;
+                        } else {
+                            if(Bukkit.getPlayer(args[2]) == null) {
+                                p.sendMessage(Utils.color("&c&lClaims &7| Invalid player!"));
+                                return false;
+                            } else {
+                                Player target = Bukkit.getPlayer(args[2]);
+                                Claim claim = new Claim(target, p.getLocation());
+
+                                p.sendMessage(Utils.color("&c&lClaims &7| You have claimed a chunk of land for x"));
+                            }
+                        }
+                    }
+                }
             }
         }
         return false;

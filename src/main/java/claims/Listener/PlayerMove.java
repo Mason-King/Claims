@@ -19,7 +19,6 @@ public class PlayerMove implements Listener {
         if(claim.isBanned(p)) {
             e.setCancelled(true);
             p.sendMessage(Utils.color("&c&lClaims &7| You have been banned from this claim!"));
-            return;
         }
 
     }
