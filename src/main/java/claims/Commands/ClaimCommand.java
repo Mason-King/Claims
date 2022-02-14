@@ -18,6 +18,9 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class ClaimCommand implements CommandExecutor {
+
+    Main main = Main.getInstance();
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if(!(sender instanceof Player)) return false;
@@ -25,12 +28,12 @@ public class ClaimCommand implements CommandExecutor {
         if(args.length == 0) {
             Chunk c = p.getWorld().getChunkAt(p.getLocation());
             if(Claim.chunkToClaims.containsKey(c)) {
-                p.sendMessage(Utils.color("&c&lClaims &7| This chunk is already claimed!"));
+                p.sendMessage(Utils.color(main.getConfig().getString("messages.alreadyClaimed")));
 
                 return false;
             }
             Claim claim = new Claim(p, p.getLocation());
-            p.sendMessage(Utils.color("&c&lClaims &7| You have just claimed a chunk of land!"));
+            p.sendMessage(Utils.color(main.getConfig().getString("messages.claimed")));
             p.playEffect(EntityEffect.FIREWORK_EXPLODE);
 
             LandClaimEvent landClaimEvent = new LandClaimEvent(claim.getId(), p, claim.getChunkX(), claim.getChunkZ(), claim);

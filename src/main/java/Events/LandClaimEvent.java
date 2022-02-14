@@ -1,7 +1,6 @@
 package Events;
 
 import claims.Objects.Claim;
-import jdk.internal.net.http.common.Cancelable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

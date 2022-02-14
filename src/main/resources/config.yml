@@ -1,4 +1,24 @@
 #Main config
 #Developed by Mason King#9052
 
-claimParticle:
+messages:
+  alreadyClaimed: "&c&lClaims &7| This claim is already claimed!"
+  claimed: "&c&lClaims &7| You just claimed a chunk of land!"
+  claimHelp:
+    - "&7&m---------- &c&lClaims &7----------"
+    - "&c&l/claim &7- Claim a chunk of land"
+    - "&c&l/claim ban <player> &7- Ban a player from entering your claim"
+    - "&c&l/claim trust <player> &7- Trust a player to your claim"
+    - "&c&l/claim flags &7- Manage your claim flags"
+  invalidPlayer: "&c&lClaims &7| Invalid player"
+  playerBanned: "&c&lClaims &7| You have banned {player} from your claim"
+  playerUnbanned: "&c&lClaims &7| You have unbanned {player} from your claim"
+  playerTrusted: "&c&lClaims &7| You have trusted {player} to your claim"
+  playerUntrusted: "&c&lClaims &7| You have untrusted {player} from your claim"
+  noPermission: "&c&lClaims &7| You do not have enough permissions for this!"
+  adminRemove: "&c&lClaims &7| Incorrect Usage: try /claim admin remove <player>"
+  adminUnclaimed: "&c&lClaims &7| You have unclaimed all of {player}'s claims"
+  notClaimed: "&c&lClaims &7| This land has not been claimed yet"
+  unclaimed: "&c&lClaims &7| You have unclaimed the land you are standing in"
+  adminClaim: "&c&lClaims &7| Incorrect Usage: try /claim admin claim <player>"
+  adminClaimed: "&c&lClaims &7| You have claimed a chunk of land for {player}"

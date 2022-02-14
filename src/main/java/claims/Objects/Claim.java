@@ -5,6 +5,9 @@ import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.dynmap.DynmapAPI;
+import org.dynmap.markers.AreaMarker;
+import org.dynmap.markers.MarkerSet;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +51,8 @@ public class Claim {
     public static Map<Chunk, Claim> chunkToClaims = new HashMap<>();
     public static Map<UUID, List<Claim>> playerClaims = new HashMap<>();
 
+    private DynmapAPI api = Main.getDynmap();
+
     public Claim(int id, UUID owner, World world, String ownerName, int chunkX, int chunkZ, List<String> banned, List<String> trusted, boolean visitorBlockBreak, boolean visitorBlockPlace, boolean visitorUse, boolean visitorOpenChest, boolean visitorOpenDoor,
                  boolean trustedBlockBreak, boolean trustedBlockPlace, boolean trustedOpenChest, boolean trustedOpenDoor, boolean trustedUse) {
         this.id = id;
@@ -72,6 +77,8 @@ public class Claim {
         this.trustedUse = trustedUse;
         this.trustedOpenChest = trustedOpenChest;
         this.trustedOpenDoor = trustedOpenDoor;
+
+        MarkerSet set = api.getMarkerAPI().createMarkerSet("islandearth.markerset", "Dungeons", api.getMarkerAPI().getMarkerIcons(), false);
 
         claims.put(id, this);
         chunkToClaims.put(chunk, this);

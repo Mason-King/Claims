@@ -12,6 +12,9 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.dynmap.DynmapAPI;
+import org.dynmap.DynmapCommonAPI;
+import org.dynmap.DynmapCommonAPIListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +25,7 @@ import java.util.UUID;
 public final class Main extends JavaPlugin {
 
     private static Main instance;
+    private static DynmapAPI api = (DynmapAPI) Bukkit.getServer().getPluginManager().getPlugin("dynmap");
 
     @Override
     public void onEnable() {
@@ -129,6 +133,10 @@ public final class Main extends JavaPlugin {
         });
 
         System.out.println(Claim.playerClaims);
+    }
+
+    public static DynmapAPI getDynmap() {
+        return api;
     }
 
 }
