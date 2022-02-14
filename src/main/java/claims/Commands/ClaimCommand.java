@@ -43,12 +43,14 @@ public class ClaimCommand implements CommandExecutor {
         } else {
             if(args[0].equalsIgnoreCase("help")) {
                 //Claim Help message
-                p.sendMessage(Utils.color("&c&lClaims &7| Claims help message!"));
+                for(String str : main.getConfig().getStringList("messages.helpMessage")) {
+                    p.sendMessage(Utils.color(s));
+                }
                 return false;
             } else if(args[0].equalsIgnoreCase("ban")) {
                 if(args.length == 2) {
                     if(Bukkit.getPlayer(args[1]) == null) {
-                        p.sendMessage(Utils.color("&c&lClaims &7| Invalid player!"));
+                        p.sendMessage(Utils.color(main.getConfig().getString("messages.invalidPlayer")));
                         return false;
                     }
                     Player target = Bukkit.getPlayer(args[1]);
@@ -63,31 +65,31 @@ public class ClaimCommand implements CommandExecutor {
                     }
 
                     claim.banClaims(target);
-                    p.sendMessage(Utils.color("&c&lClaims &7| You have banned x from all your claims!"));
+                    p.sendMessage(Utils.color(main.getConfig().getString("messages.playerBanned").replace("{player}", target.getName())));
                     return false;
                 }
             } else if(args[0].equalsIgnoreCase("unban")) {
                 if(args.length == 2) {
                     if(Bukkit.getPlayer(args[1]) == null) {
-                        p.sendMessage(Utils.color("&c&lClaims &7| Invalid player!"));
+                        p.sendMessage(Utils.color(main.getConfig().getString("messages.invalidPlayer")));
                         return false;
                     }
                     Player target = Bukkit.getPlayer(args[1]);
                     Claim claim = Claim.getClaims(p).get(0);
                     claim.unbanClaims(target);
-                    p.sendMessage(Utils.color("&c&lClaims &7| You have unbanned x from all of your claims!"));
+                    p.sendMessage(Utils.color(main.getConfig().getString("messages.playerUnbanned").replace("{player}", target.getName())));
                 }
             } else if(args[0].equalsIgnoreCase("bans")) {
                 new BanGui().gui(p).show(p);
             } else if(args[0].equalsIgnoreCase("trust")) {
                 if(Bukkit.getPlayer(args[1]) == null) {
-                    p.sendMessage(Utils.color("&c&lClaims &7| Invalid player!"));
+                    p.sendMessage(Utils.color(main.getConfig().getString("messages.invalidPlayer")));
                     return false;
                 }
                 Player target = Bukkit.getPlayer(args[1]);
                 Claim claim = Claim.getClaims(p).get(0);
                 claim.trustClaims(target);
-                p.sendMessage(Utils.color("&c&lClaims &7| You have trusted x to your claims!"));
+                p.sendMessage(Utils.color(main.getConfig().getString("messages.playerTrusted")));
             } else if(args[0].equalsIgnoreCase("untrust")) {
                 if(Bukkit.getPlayer(args[1]) == null) {
                     p.sendMessage(Utils.color("&c&lClaims &7| Invalid player!"));
