@@ -78,7 +78,16 @@ public class Claim {
         this.trustedOpenChest = trustedOpenChest;
         this.trustedOpenDoor = trustedOpenDoor;
 
-        MarkerSet set = api.getMarkerAPI().createMarkerSet("islandearth.markerset", "Dungeons", api.getMarkerAPI().getMarkerIcons(), false);
+        System.out.println(api);
+        MarkerSet markerset = api.getMarkerAPI().createMarkerSet("setId", "Display Name", null, false);
+        int cornerAX = chunkX * 16, cornerAZ = chunkZ & 16, cornerBX = cornerAX + 15, cornerBZ = cornerAZ + 15;
+        double[] x = new double[] {cornerAX, cornerBX};
+        double[] z = new double[] {cornerAZ, cornerBZ};
+        System.out.println(markerset == null);
+        System.out.println(markerset + " <- Marker set");
+        AreaMarker marker = markerset.createAreaMarker("id", "label", true,
+                world.getName(),x,z, false);
+        marker.setFillStyle(1, 0x42f4f1);
 
         claims.put(id, this);
         chunkToClaims.put(chunk, this);
@@ -101,6 +110,14 @@ public class Claim {
         List<Claim> temp = playerClaims.containsKey(owner) ? playerClaims.get(owner) : new ArrayList<>();
         temp.add(this);
         playerClaims.put(owner.getUniqueId(), temp);
+
+        MarkerSet markerset = api.getMarkerAPI().createMarkerSet("id", "label", null, true);
+        int cornerAX = chunkX * 16, cornerAZ = chunkZ & 16, cornerBX = cornerAX + 15, cornerBZ = cornerAZ + 15;
+        double[] x = new double[] {cornerAX, cornerBX};
+        double[] z = new double[] {cornerAZ, cornerBZ};
+        AreaMarker marker = markerset.createAreaMarker("id", "label", true,
+                world.getName(),x,z, false);
+        marker.setFillStyle(1, 0x42f4f1);
 
         syncFlags();
     }
