@@ -78,14 +78,15 @@ public class Claim {
         this.trustedOpenChest = trustedOpenChest;
         this.trustedOpenDoor = trustedOpenDoor;
 
-        System.out.println(api);
-        MarkerSet markerset = api.getMarkerAPI().createMarkerSet("setId", "Display Name", null, false);
+        MarkerSet markerset = api.getMarkerAPI().getMarkerSet("setId");
+        if (markerset == null) {
+            markerset = api.getMarkerAPI().createMarkerSet("setId", "Display Name", null, true);
+        }
         int cornerAX = chunkX * 16, cornerAZ = chunkZ & 16, cornerBX = cornerAX + 15, cornerBZ = cornerAZ + 15;
         double[] x = new double[] {cornerAX, cornerBX};
         double[] z = new double[] {cornerAZ, cornerBZ};
-        System.out.println(markerset == null);
-        System.out.println(markerset + " <- Marker set");
-        AreaMarker marker = markerset.createAreaMarker("id", "label", true,
+        AreaMarker marker = markerset.getAreaMarkers();
+        AreaMarker marker = markerset.createAreaMarker("setId", "label", true,
                 world.getName(),x,z, false);
         marker.setFillStyle(1, 0x42f4f1);
 
@@ -111,7 +112,10 @@ public class Claim {
         temp.add(this);
         playerClaims.put(owner.getUniqueId(), temp);
 
-        MarkerSet markerset = api.getMarkerAPI().createMarkerSet("id", "label", null, true);
+        MarkerSet markerset = api.getMarkerAPI().getMarkerSet("setId");
+        if (markerset == null) {
+            markerset = api.getMarkerAPI().createMarkerSet("setId", "Display Name", null, false);
+        }
         int cornerAX = chunkX * 16, cornerAZ = chunkZ & 16, cornerBX = cornerAX + 15, cornerBZ = cornerAZ + 15;
         double[] x = new double[] {cornerAX, cornerBX};
         double[] z = new double[] {cornerAZ, cornerBZ};
