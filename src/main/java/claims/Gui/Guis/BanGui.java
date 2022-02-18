@@ -14,10 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class BanGui {
 
@@ -35,23 +32,38 @@ public class BanGui {
 
         Claim claim = Claim.getClaims(p).get(0);
 
-        for(String s : claim.banned) {
-            int key = 0, page = 0;
-            if(key == config.getInt("banSlots")) {
-                page++;
-                key = 0;
-            }
-            if(page > 0) {
-                HashMap<Integer, ItemStack> inv = new HashMap<>();
-                for(int i = 0; i < banGui.getInventory().getContents().length -1; i++) {
-                }
-            }
+        int key = 0;
+        int page = 0;
+        List<String> temp = new ArrayList<>();
+        for(int i = 0; i < 50; i++) {
+            temp.add(UUID.randomUUID().toString());
         }
+        for(int i = 0; i < temp.size(); i++) {
+            int slots = config.getInt("banSlots");
+
+            banGui.setItemPage(getBanned(temp.get(i), i));
+        }
+
+        banGui.onClick(e -> {
+            int slot = e.getSlot();
+
+            int next = config.getInt("next");
+            int previous = config.getInt("previous");
+
+
+            if(slot == next) {
+                System.out.println("next!");
+                banGui.nextPage();
+            } else if(slot == previous) {
+                banGui.prevPage();
+            }
+
+        });
 
         return banGui;
     }
 
-    public ItemStack getBanned(String s) {
+    public ItemStack getBanned(String s, int num) {
         ItemStack i = new ItemStack(Material.matchMaterial(config.getString("banItem.material")));
         if(i.getType().equals(Material.PLAYER_HEAD)) {
             SkullMeta sm = (SkullMeta) i.getItemMeta();
@@ -60,10 +72,11 @@ public class BanGui {
         }
 
         ItemMeta im = i.getItemMeta();
-        im.setDisplayName(Utils.color(config.getString("banItem.name").replace("{player}", Bukkit.getOfflinePlayer(UUID.fromString(s)).getName())));
+        //im.setDisplayName(Utils.color(config.getString("banItem.name").replace("{player}", Bukkit.getOfflinePlayer(UUID.fromString(s)).getName())));
+        im.setDisplayName(Utils.color(config.getString("banItem.name")));
         List<String> lore = new ArrayList<>();
         for(String loreString : config.getStringList("banItem.lore")) {
-            lore.add(Utils.color(loreString.replace("{player}", Bukkit.getOfflinePlayer(UUID.fromString(s)).getName())));
+            lore.add(Utils.color(loreString.replace("{player}", num + "")));
         }
         im.setLore(lore);
 

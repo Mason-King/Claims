@@ -27,6 +27,10 @@ public final class Main extends JavaPlugin {
     private static Main instance;
     private static DynmapAPI api = (DynmapAPI) Bukkit.getServer().getPluginManager().getPlugin("dynmap");
 
+    //TODO
+    // - fix impropper saving when unclaimed/admin deleted
+    // -
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -69,6 +73,7 @@ public final class Main extends JavaPlugin {
             Claim claim = (Claim) e.getValue();
             if(claim.isUnclaimed()) {
                 config.set("claims." + claim.getId(), null);
+                System.out.println("deleted claim!");
                 continue;
             }
 

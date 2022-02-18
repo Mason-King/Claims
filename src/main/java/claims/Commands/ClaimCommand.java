@@ -91,17 +91,29 @@ public class ClaimCommand implements CommandExecutor {
                 claim.trustClaims(target);
                 p.sendMessage(Utils.color(main.getConfig().getString("messages.playerTrusted")));
             } else if(args[0].equalsIgnoreCase("untrust")) {
-                if(Bukkit.getPlayer(args[1]) == null) {
+                if(args.length < 2) {
+                    p.sendMessage(Utils.color("&c&lClaims &7| Usage msg"));
+                    return false;
+                }
+                if(Bukkit.getPlayer(args[2]) == null) {
                     p.sendMessage(Utils.color("&c&lClaims &7| Invalid player!"));
                     return false;
                 }
-                Player target = Bukkit.getPlayer(args[1]);
+                Player target = Bukkit.getPlayer(args[2]);
                 Claim claim = Claim.getClaims(p).get(0);
                 claim.untrustClaims(target);
                 p.sendMessage(Utils.color("&c&lClaims &7| You have trusted x to your claims!"));
             } else if(args[0].equalsIgnoreCase("flags")) {
+                if(Claim.playerClaims.get(p.getUniqueId()) == null) {
+                    p.sendMessage(Utils.color("&c&lClaims &7| No claims!"));
+                    return false;
+                }
                 new flagsGui().gui().show(p);
             } else if(args[0].equalsIgnoreCase("admin")) {
+                if(args.length == 1) {
+                    p.sendMessage(Utils.color("&c&lClaims admin command"));
+                    return false;
+                }
                 if(!p.hasPermission("claims.admin")) {
                     p.sendMessage(Utils.color("&c&lClaims &7| Sorry, you do not have enough permission for this!"));
                     return false;
@@ -111,11 +123,11 @@ public class ClaimCommand implements CommandExecutor {
                             p.sendMessage(Utils.color("&c&lClaims &7| incorrect usage try : /claim admin remove <player>"));
                             return false;
                         } else {
-                            if(Bukkit.getPlayer(args[0]) == null) {
+                            if(Bukkit.getPlayer(args[2]) == null) {
                                 p.sendMessage(Utils.color("&c&lClaims &7| Invalid player!"));
                                 return false;
                             } else {
-                                Player target = Bukkit.getPlayer(args[0]);
+                                Player target = Bukkit.getPlayer(args[2]);
                                 List<Claim> claims  = Claim.getClaims(target.getPlayer());
                                 for(Claim claim : claims) {
                                     claim.setUnclaimed(true);

@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -14,11 +15,16 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 public class BlockBreak implements Listener {
+
 
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
         Player p = (Player) e.getPlayer();
+        System.out.println("ni");
 
 
         Chunk c = e.getBlock().getChunk();
@@ -46,14 +52,11 @@ public class BlockBreak implements Listener {
 
     @EventHandler
     public void onPlace(BlockPlaceEvent e) {
-        System.out.println("1");
         Player p = (Player) e.getPlayer();
 
         Chunk c = e.getBlock().getChunk();
-        System.out.println(c.getWorld());
 
         Claim claim = Claim.getClaimAt(p.getWorld(), c.getX(), c.getZ());
-        System.out.println(claim.getId());
         if(claim == null) return;
 
 
@@ -131,7 +134,7 @@ public class BlockBreak implements Listener {
                         p.sendMessage(Utils.color("&c&lClaims &7| Sorry, you can not do this in this claim!"));
                     }
                 }
-            } else {
+            } else if(b.getType().name().contains("BUTTON") || b.getType().equals(Material.LEVER) || b.getType().name().contains("BED") || b.getType().name().contains("ANVIL")) {
                 if(claim.getOwner().equals(p.getUniqueId())) return;
                 if(claim.isTrusted(p)) {
                     if(!claim.isTrustedUse()) {

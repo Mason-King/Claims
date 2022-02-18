@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Utils {
@@ -89,6 +90,12 @@ public class Utils {
         }
     }
 
+    public static HashMap<Integer, ItemStack> inv = new HashMap<>();
+
+    public static HashMap<Integer, ItemStack> getInv() {
+        return inv;
+    }
+
     public static void makeFormat(Player p, String visitor, FileConfiguration config, Gui gui, List<String> toFormat, String keyForItems) {
         int size = gui.getInventory().getSize();
         if (toFormat.size() == size / 9) {
@@ -125,6 +132,7 @@ public class Utils {
 
 
                             gui.i((9 * i) + z, stack);
+                            inv.put((9 * i) + z, stack);
                         }
                     } else {
                         if (config.get(keyForItems + "." + individual) == null) {
@@ -154,6 +162,7 @@ public class Utils {
 
 
                             gui.i(z, stack);
+                            inv.put((9 * i) + z, stack);
                         }
                     }
                 }

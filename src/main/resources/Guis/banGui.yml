@@ -10,6 +10,9 @@ format:
 #How many ban slots there are, by default there are 22 #
 banSlots: 22
 
+next: 41
+previous: 39
+
 # '#' will automatically fill with player bans
 items:
   '!':

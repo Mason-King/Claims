@@ -78,16 +78,23 @@ public class Claim {
         this.trustedOpenChest = trustedOpenChest;
         this.trustedOpenDoor = trustedOpenDoor;
 
-        MarkerSet markerset = api.getMarkerAPI().getMarkerSet("setId");
+        MarkerSet markerset = api.getMarkerAPI().getMarkerSet(id + "");
         if (markerset == null) {
-            markerset = api.getMarkerAPI().createMarkerSet("setId", "Display Name", null, true);
+            markerset = api.getMarkerAPI().createMarkerSet(id + "", ownerName, null, true);
         }
         int cornerAX = chunkX * 16, cornerAZ = chunkZ & 16, cornerBX = cornerAX + 15, cornerBZ = cornerAZ + 15;
         double[] x = new double[] {cornerAX, cornerBX};
         double[] z = new double[] {cornerAZ, cornerBZ};
-        AreaMarker marker = markerset.getAreaMarkers();
-        AreaMarker marker = markerset.createAreaMarker("setId", "label", true,
-                world.getName(),x,z, false);
+        AreaMarker marker = null;
+        for(AreaMarker m : markerset.getAreaMarkers()) {
+            if(m.getMarkerID().equals(id)) {
+                marker = m;
+            }
+        }
+        if(marker == null) {
+            marker = markerset.createAreaMarker(id + "", ownerName, true,
+                    world.getName(), x, z, false);
+        }
         marker.setFillStyle(1, 0x42f4f1);
 
         claims.put(id, this);
@@ -112,15 +119,23 @@ public class Claim {
         temp.add(this);
         playerClaims.put(owner.getUniqueId(), temp);
 
-        MarkerSet markerset = api.getMarkerAPI().getMarkerSet("setId");
+        MarkerSet markerset = api.getMarkerAPI().getMarkerSet(id + "");
         if (markerset == null) {
-            markerset = api.getMarkerAPI().createMarkerSet("setId", "Display Name", null, false);
+            markerset = api.getMarkerAPI().createMarkerSet(id + "", ownerName, null, true);
         }
         int cornerAX = chunkX * 16, cornerAZ = chunkZ & 16, cornerBX = cornerAX + 15, cornerBZ = cornerAZ + 15;
         double[] x = new double[] {cornerAX, cornerBX};
         double[] z = new double[] {cornerAZ, cornerBZ};
-        AreaMarker marker = markerset.createAreaMarker("id", "label", true,
-                world.getName(),x,z, false);
+        AreaMarker marker = null;
+        for(AreaMarker m : markerset.getAreaMarkers()) {
+            if(m.getMarkerID().equals(id)) {
+                marker = m;
+            }
+        }
+        if(marker == null) {
+            marker = markerset.createAreaMarker(id + "", ownerName, true,
+                    world.getName(), x, z, false);
+        }
         marker.setFillStyle(1, 0x42f4f1);
 
         syncFlags();
