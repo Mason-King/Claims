@@ -44,13 +44,6 @@ public class BanGui {
                 key = 0;
             }
             if(page > 0) {
-                HashMap<Integer, ItemStack> inv = Utils.getInv();
-                System.out.println(inv);
-                for(int i = 1; i <= page; i++) {
-                    for(Map.Entry e : inv.entrySet()) {
-                        banGui.setItemPage(i, (Integer) e.getKey(), (ItemStack) e.getValue());
-                    }
-                }
             }
             banGui.setItemPage(page, getBanned(s, temp.indexOf(s)));
             key++;

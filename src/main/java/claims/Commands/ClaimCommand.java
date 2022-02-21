@@ -6,10 +6,7 @@ import claims.Gui.Guis.flagsGui;
 import claims.Main;
 import claims.Objects.Claim;
 import claims.Utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.EntityEffect;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -109,6 +106,31 @@ public class ClaimCommand implements CommandExecutor {
                     return false;
                 }
                 new flagsGui().gui().show(p);
+            } else if(args[0].equalsIgnoreCase("view")) {
+                Chunk chunk = p.getLocation().getChunk();
+
+                int minX = chunk.getX()*16;
+                int minZ = chunk.getZ()*16;
+
+                int maxX = chunk.getX();
+                int maxZ = chunk.getZ();
+                int minY = p.getLocation().getBlockY();
+                Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(255, 0, 0), 1);
+
+                for(int i = 0; i < 16; i++) {
+                    int x = minX + i;
+                    int z = minZ + i;
+
+                    
+                    chunk.getWorld().getBlockAt(x, minY, minZ).setType(Material.BLUE_WOOL);
+                    chunk.getWorld().getBlockAt(minX, minY, z).setType(Material.RED_WOOL);
+
+                    chunk.getWorld().getBlockAt(minZ, minY, x + 15).setType(Material.YELLOW_WOOL);
+                    chunk.getWorld().getBlockAt(z + 15, minY, minX).setType(Material.GREEN_WOOL);
+
+                }
+
+
             } else if(args[0].equalsIgnoreCase("admin")) {
                 if(args.length == 1) {
                     p.sendMessage(Utils.color("&c&lClaims admin command"));
