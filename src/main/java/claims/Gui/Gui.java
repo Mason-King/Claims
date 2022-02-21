@@ -212,6 +212,14 @@ public class Gui implements Listener {
         return this;
     }
 
+    public Gui setItemPage(int page, ItemStack item) {
+        items[(page * invsize)] = item;
+        if (this.page == page) {
+            getInventory().addItem(item);
+        }
+        return this;
+    }
+
     public Gui setItemPage(int page, int position, ItemStack item) {
         items[position + (page * invsize)] = item;
         if (this.page == page) {

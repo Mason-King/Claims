@@ -38,10 +38,22 @@ public class BanGui {
         for(int i = 0; i < 50; i++) {
             temp.add(UUID.randomUUID().toString());
         }
-        for(int i = 0; i < temp.size(); i++) {
-            int slots = config.getInt("banSlots");
-
-            banGui.setItemPage(getBanned(temp.get(i), i));
+        for(String s : temp) {
+            if(key == config.getInt("banSlots")) {
+                page++;
+                key = 0;
+            }
+            if(page > 0) {
+                HashMap<Integer, ItemStack> inv = Utils.getInv();
+                System.out.println(inv);
+                for(int i = 1; i <= page; i++) {
+                    for(Map.Entry e : inv.entrySet()) {
+                        banGui.setItemPage(i, (Integer) e.getKey(), (ItemStack) e.getValue());
+                    }
+                }
+            }
+            banGui.setItemPage(page, getBanned(s, temp.indexOf(s)));
+            key++;
         }
 
         banGui.onClick(e -> {

@@ -6,6 +6,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -21,7 +22,7 @@ import java.util.Set;
 public class BlockBreak implements Listener {
 
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onBreak(BlockBreakEvent e) {
         Player p = (Player) e.getPlayer();
         System.out.println("ni");
@@ -80,76 +81,5 @@ public class BlockBreak implements Listener {
         }
     }
 
-    @EventHandler
-    public void onHit(EntityDamageByEntityEvent e) {
-        if(!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player)) return;
-
-        Player target = (Player) e.getEntity();
-        Player damager = (Player) e.getDamager();
-
-        Chunk chunk = target.getWorld().getChunkAt(target.getLocation().getBlockX(), target.getLocation().getBlockZ());
-
-        if(Claim.chunkToClaims.containsKey(chunk)) {
-           e.setCancelled(true);
-           damager.sendMessage(Utils.color("&c&lClaims &7| Sorry, you can not PvP here!"));
-        }
-
-    }
-
-    @EventHandler
-    public void interact(PlayerInteractEvent e) {
-        Player p = (Player) e.getPlayer();
-
-        Chunk c = p.getLocation().getChunk();
-        Claim claim = Claim.getClaimAt(p.getWorld(), c.getX(), c.getZ());
-        if(claim == null) return;
-
-        if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            Block b = e.getClickedBlock();
-
-            if(b.getType().equals(Material.CHEST) || b.getType().equals(Material.TRAPPED_CHEST)) {
-                //Chest use flag goes here!
-                if(claim.getOwner().equals(p.getUniqueId())) return;
-                if(claim.isTrusted(p)) {
-                    if(!claim.isTrustedOpenChest()) {
-                        e.setCancelled(true);
-                        p.sendMessage(Utils.color("&c&lClaims &7| Sorry, you can not do this in this claim!"));
-                    }
-                } else {
-                    if(!claim.isVisitorOpenChest()) {
-                        e.setCancelled(true);
-                        p.sendMessage(Utils.color("&c&lClaims &7| Sorry, you can not do this in this claim!"));
-                    }
-                }
-            } else if(b.getType().name().contains("DOOR")) {
-                if(claim.getOwner().equals(p.getUniqueId())) return;
-                if(claim.isTrusted(p)) {
-                    if(!claim.isTrustedOpenDoor()) {
-                        e.setCancelled(true);
-                        p.sendMessage(Utils.color("&c&lClaims &7| Sorry, you can not do this in this claim!"));
-                    }
-                } else {
-                    if(!claim.isVisitorOpenDoor()) {
-                        e.setCancelled(true);
-                        p.sendMessage(Utils.color("&c&lClaims &7| Sorry, you can not do this in this claim!"));
-                    }
-                }
-            } else if(b.getType().name().contains("BUTTON") || b.getType().equals(Material.LEVER) || b.getType().name().contains("BED") || b.getType().name().contains("ANVIL")) {
-                if(claim.getOwner().equals(p.getUniqueId())) return;
-                if(claim.isTrusted(p)) {
-                    if(!claim.isTrustedUse()) {
-                        e.setCancelled(true);
-                        p.sendMessage(Utils.color("&c&lClaims &7| Sorry, you can not do this in this claim!"));
-                    }
-                } else {
-                    if(!claim.isVisitorUse()) {
-                        e.setCancelled(true);
-                        p.sendMessage(Utils.color("&c&lClaims &7| Sorry, you can not do this in this claim!"));
-                    }
-                }
-            }
-        }
-
-    }
 
 }

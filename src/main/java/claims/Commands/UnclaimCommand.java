@@ -16,9 +16,13 @@ public class UnclaimCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         Player p = (Player) sender;
         if(args.length == 0) {
-            p.sendMessage(Utils.color("&c&lClaims &7| You have unclaimed this chunk!"));
             Chunk c = p.getLocation().getChunk();
             Claim claim = Claim.getClaimAt(p.getWorld(),c.getX(), c.getZ());
+            if(claim == null || !claim.getOwner().equals(p.getUniqueId())) {
+                p.sendMessage(Utils.color("&c&lClaims &7| You havent claimed this chunk!"));
+                return false;
+            }
+            p.sendMessage(Utils.color("&c&lClaims &7| You have unclaimed this chunk!"));
             claim.setUnclaimed(true);
         }
         return false;

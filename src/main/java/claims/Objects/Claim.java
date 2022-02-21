@@ -82,7 +82,7 @@ public class Claim {
         if (markerset == null) {
             markerset = api.getMarkerAPI().createMarkerSet(id + "", ownerName, null, true);
         }
-        int cornerAX = chunkX * 16, cornerAZ = chunkZ & 16, cornerBX = cornerAX + 15, cornerBZ = cornerAZ + 15;
+        int cornerAX = chunkX * 16, cornerAZ = chunkZ * 16, cornerBX = cornerAX + 16, cornerBZ = cornerAZ + 16;
         double[] x = new double[] {cornerAX, cornerBX};
         double[] z = new double[] {cornerAZ, cornerBZ};
         AreaMarker marker = null;
@@ -95,7 +95,8 @@ public class Claim {
             marker = markerset.createAreaMarker(id + "", ownerName, true,
                     world.getName(), x, z, false);
         }
-        marker.setFillStyle(1, 0x42f4f1);
+        marker.setFillStyle(0.25, 0xff0000);
+        marker.setLineStyle(1, 1, 0xff0000);
 
         claims.put(id, this);
         chunkToClaims.put(chunk, this);
@@ -123,7 +124,8 @@ public class Claim {
         if (markerset == null) {
             markerset = api.getMarkerAPI().createMarkerSet(id + "", ownerName, null, true);
         }
-        int cornerAX = chunkX * 16, cornerAZ = chunkZ & 16, cornerBX = cornerAX + 15, cornerBZ = cornerAZ + 15;
+        int cornerAX = chunkX * 17, cornerAZ = chunkZ * 16, cornerBX = cornerAX + 16, cornerBZ = cornerAZ + 16;
+
         double[] x = new double[] {cornerAX, cornerBX};
         double[] z = new double[] {cornerAZ, cornerBZ};
         AreaMarker marker = null;
@@ -136,7 +138,8 @@ public class Claim {
             marker = markerset.createAreaMarker(id + "", ownerName, true,
                     world.getName(), x, z, false);
         }
-        marker.setFillStyle(1, 0x42f4f1);
+        marker.setFillStyle(0.25, 0xff0000);
+        marker.setLineStyle(1, 1, 0xff0000);
 
         syncFlags();
     }

@@ -1,0 +1,37 @@
+title: "&lClaim bans"
+size: 45
+format:
+  - '! ! ! ! ! ! ! ! !'
+  - '! # # # # # # # !'
+  - '! # # # # # # # !'
+  - '! # # # # # # # !'
+  - '! ! ! < ! > ! ! !'
+
+#How many ban slots there are, by default there are 22 #
+banSlots: 22
+
+next: 41
+previous: 39
+
+# '#' will automatically fill with player bans
+items:
+  '!':
+    material: BLACK_STAINED_GLASS_PANE
+    name: ""
+    lore: ""
+  '<':
+    material: PAPER
+    name: "&c&lPrevious Page"
+    lore: ""
+  '>':
+    material: PAPER
+    name: "&c&lNext Page"
+    lore: ""
+
+banItem:
+  material: PLAYER_HEAD
+  name: "&c&l{player}"
+  lore:
+    - "&7{player} is currently &c&lBanned!"
+    - ""
+    - "&7&o(( Click to unban ))"

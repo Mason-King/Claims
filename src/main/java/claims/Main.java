@@ -4,7 +4,9 @@ package claims;
 import claims.Commands.ClaimCommand;
 import claims.Commands.UnclaimCommand;
 import claims.Listener.BlockBreak;
+import claims.Listener.PlayerInteract;
 import claims.Listener.PlayerMove;
+import claims.Listener.PvpListener;
 import claims.Objects.Claim;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -28,7 +30,7 @@ public final class Main extends JavaPlugin {
     private static DynmapAPI api = (DynmapAPI) Bukkit.getServer().getPluginManager().getPlugin("dynmap");
 
     //TODO
-    // - fix impropper saving when unclaimed/admin deleted
+    // - fix  playerinteractevent firing before block break
     // -
 
     @Override
@@ -51,6 +53,8 @@ public final class Main extends JavaPlugin {
 
         this.getServer().getPluginManager().registerEvents(new PlayerMove(), this);
         this.getServer().getPluginManager().registerEvents(new BlockBreak(), this);
+        this.getServer().getPluginManager().registerEvents(new PvpListener(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
 
     }
 
