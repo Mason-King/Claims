@@ -152,6 +152,7 @@ public class Gui implements Listener {
         if (pagesize > page + 1) {
             page++;
             for (int i = 0; i < invsize; i++) {
+                System.out.println(items[i + (page * invsize)]);
                 getInventory().setItem(i, items[i + (page * invsize)]);
             }
         }
@@ -213,6 +214,7 @@ public class Gui implements Listener {
     }
 
     public Gui setItemPage(int page, ItemStack item) {
+        System.out.println(items.length);
         items[(page * invsize)] = item;
         if (this.page == page) {
             getInventory().addItem(item);

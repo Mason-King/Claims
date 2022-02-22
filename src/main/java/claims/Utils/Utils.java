@@ -30,6 +30,12 @@ public class Utils {
         return chunks;
     }
 
+    private static HashMap<ItemStack, Integer> inv = new HashMap<>();
+
+    public static HashMap<ItemStack, Integer> getInv() {
+        return inv;
+    }
+
     public static void makeFormat(FileConfiguration config, Gui gui, List<String> toFormat, String keyForItems) {
         int size = gui.getInventory().getSize();
         if (toFormat.size() == size / 9) {
@@ -59,6 +65,7 @@ public class Utils {
 
 
                             gui.i((9 * i) + z, stack);
+                            inv.put(stack,(9 * i) + z );
                         }
                     } else {
                         if (config.get(keyForItems + "." + individual) == null) {
@@ -81,6 +88,7 @@ public class Utils {
 
 
                             gui.i(z, stack);
+                            inv.put(stack,(9 * i) + z );
                         }
                     }
                 }

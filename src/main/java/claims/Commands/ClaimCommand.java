@@ -12,6 +12,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClaimCommand implements CommandExecutor {
@@ -31,7 +32,7 @@ public class ClaimCommand implements CommandExecutor {
             }
             Claim claim = new Claim(p, p.getLocation());
             p.sendMessage(Utils.color(main.getConfig().getString("messages.claimed")));
-            p.playEffect(EntityEffect.FIREWORK_EXPLODE);
+            p.spawnParticle(Particle.FIREWORKS_SPARK, p.getLocation(), 120);
 
             LandClaimEvent landClaimEvent = new LandClaimEvent(claim.getId(), p, claim.getChunkX(), claim.getChunkZ(), claim);
             Bukkit.getPluginManager().callEvent(landClaimEvent);
@@ -109,27 +110,39 @@ public class ClaimCommand implements CommandExecutor {
             } else if(args[0].equalsIgnoreCase("view")) {
                 Chunk chunk = p.getLocation().getChunk();
 
-                int minX = chunk.getX()*16;
-                int minZ = chunk.getZ()*16;
-
-                int maxX = chunk.getX();
-                int maxZ = chunk.getZ();
                 int minY = p.getLocation().getBlockY();
-                Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(255, 0, 0), 1);
+                int radius = 3;
 
-                for(int i = 0; i < 16; i++) {
-                    int x = minX + i;
-                    int z = minZ + i;
+                Particle.DustOptions dustOptions = null;
 
-                    
-                    chunk.getWorld().getBlockAt(x, minY, minZ).setType(Material.BLUE_WOOL);
-                    chunk.getWorld().getBlockAt(minX, minY, z).setType(Material.RED_WOOL);
 
-                    chunk.getWorld().getBlockAt(minZ, minY, x + 15).setType(Material.YELLOW_WOOL);
-                    chunk.getWorld().getBlockAt(z + 15, minY, minX).setType(Material.GREEN_WOOL);
+                for(Chunk c : getChunks(chunk , 1)) {
+
+                    if(Claim.chunkToClaims.get(c) != null && Claim.chunkToClaims.get(c).getOwner().equals(p.getUniqueId())) {
+                        dustOptions = new Particle.DustOptions(Color.fromRGB(0, 255, 0), 1);
+                    } else {
+                        dustOptions = new Particle.DustOptions(Color.fromRGB(255, 0, 0), 1);
+                    }
+
+                    int minX = c.getX()*16;
+                    int minZ = c.getZ()*16;
+
+                    for(int i = 0; i < 16; i++) {
+                        int x1 = minX + i;
+                        int z1 = minZ + i;
+
+                        int x2 = (minX + 15) - i;
+                        int z2 = (minZ + 15) - i;
+
+
+                        p.spawnParticle(Particle.REDSTONE, x1, minY, minZ, 120, dustOptions);
+                        p.spawnParticle(Particle.REDSTONE, minX , minY, z1, 120, dustOptions);
+                        p.spawnParticle(Particle.REDSTONE, x2,  minY, minZ + 15, 120, dustOptions);
+                        p.spawnParticle(Particle.REDSTONE, minX + 15, minY, z2, 120, dustOptions);
+
+                    }
 
                 }
-
 
             } else if(args[0].equalsIgnoreCase("admin")) {
                 if(args.length == 1) {
@@ -192,4 +205,16 @@ public class ClaimCommand implements CommandExecutor {
         }
         return false;
     }
+
+    public List<Chunk> getChunks(Chunk centerChunk, int radius){
+        List<Chunk> chunks = new ArrayList<>();
+        for (int x = centerChunk.getX()-radius; x < centerChunk.getX() + (1 + radius); x++) {
+            for (int z = centerChunk.getZ()-radius; z < centerChunk.getZ() + (1 + radius); z++) {
+                Chunk chunk = centerChunk.getWorld().getChunkAt(x, z);
+                chunks.add(chunk);
+            }
+        }
+        return chunks;
+    }
+
 }

@@ -24,7 +24,7 @@ public class BanGui {
     private YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
     public Gui gui(Player p) {
-        Gui banGui = new Gui(Utils.color(config.getString("title")), config.getInt("size"))
+        Gui banGui = new Gui(Utils.color(config.getString("title")), config.getInt("size"), config.getInt("size"))
                 .c();
 
         List<String> format = config.getStringList("format");
@@ -35,15 +35,24 @@ public class BanGui {
         int key = 0;
         int page = 0;
         List<String> temp = new ArrayList<>();
-        for(int i = 0; i < 50; i++) {
+        for(int i = 0; i < 25; i++) {
             temp.add(UUID.randomUUID().toString());
         }
         for(String s : temp) {
+            if(s == null) continue;
+            if(page > 0) {
+                HashMap<ItemStack, Integer> inv = Utils.getInv();
+                for(int i = 1; i <= page; i++) {
+                    for(Map.Entry e : inv.entrySet()) {
+                        System.out.println(e.getKey());
+                        System.out.println(e.getValue());
+                        banGui.setItemPage(i, (Integer) e.getValue(), (ItemStack) e.getKey());
+                    }
+                }
+            }
             if(key == config.getInt("banSlots")) {
                 page++;
                 key = 0;
-            }
-            if(page > 0) {
             }
             banGui.setItemPage(page, getBanned(s, temp.indexOf(s)));
             key++;
@@ -55,9 +64,10 @@ public class BanGui {
             int next = config.getInt("next");
             int previous = config.getInt("previous");
 
+            System.out.println(next);
+            System.out.println(slot);
 
             if(slot == next) {
-                System.out.println("next!");
                 banGui.nextPage();
             } else if(slot == previous) {
                 banGui.prevPage();
