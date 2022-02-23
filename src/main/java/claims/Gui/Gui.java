@@ -37,7 +37,7 @@ public class Gui implements Listener {
     public Gui gui;
     private boolean cancel = false;
     private boolean shift = false;
-    private Plugin plugin = Main.getInstance();
+    private Plugin plugin;
     private boolean listen;
     private ItemStack[] items;
     private int page = 0;
@@ -45,6 +45,7 @@ public class Gui implements Listener {
     List<String> viewing = new ArrayList<>();
 
     public Gui(String name, int size, int pagesize) {
+        plugin = Main.getInstance();
         this.gui = this;
         this.name = color(name)[0];
         this.size = size == 1 ? 1 : getInventorySize(size);
@@ -56,6 +57,7 @@ public class Gui implements Listener {
     }
 
     public Gui(String name, List<ItemStack> pagesize) {
+        plugin = Main.getInstance();
         this.gui = this;
         this.name = color(name)[0];
         this.size = size == 1 ? 1 : getInventorySize(size);
@@ -73,6 +75,7 @@ public class Gui implements Listener {
     }
 
     public Gui(String name, int size) {
+        plugin = Main.getInstance();
         this.gui = this;
         this.name = color(name)[0];
         this.size = size == 1 ? 1 : getInventorySize(size);
@@ -87,7 +90,6 @@ public class Gui implements Listener {
         for (Player p : this.getViewers())
             close(p);
     }
-
 
     public Gui show(Player p) {
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
@@ -152,7 +154,6 @@ public class Gui implements Listener {
         if (pagesize > page + 1) {
             page++;
             for (int i = 0; i < invsize; i++) {
-                System.out.println(items[i + (page * invsize)]);
                 getInventory().setItem(i, items[i + (page * invsize)]);
             }
         }
@@ -162,6 +163,9 @@ public class Gui implements Listener {
     public Gui prevPage() {
         if (page > 0) {
             page--;
+            for(ItemStack i : items) {
+                System.out.println(i);
+            }
             for (int i = 0; i < invsize; i++) {
                 getInventory().setItem(i, items[i + (page * invsize)]);
             }
@@ -213,8 +217,15 @@ public class Gui implements Listener {
         return this;
     }
 
+    public Gui setItemPage(int page, int position, ItemStack item) {
+        items[position + (page * invsize)] = item;
+        if (this.page == page) {
+            getInventory().setItem(position, item);
+        }
+        return this;
+    }
+
     public Gui setItemPage(int page, ItemStack item) {
-        System.out.println(items.length);
         items[(page * invsize)] = item;
         if (this.page == page) {
             getInventory().addItem(item);
@@ -222,11 +233,8 @@ public class Gui implements Listener {
         return this;
     }
 
-    public Gui setItemPage(int page, int position, ItemStack item) {
-        items[position + (page * invsize)] = item;
-        if (this.page == page) {
-            getInventory().setItem(position, item);
-        }
+    public Gui setPageItems(ItemStack[] items, int page) {
+        this.items = items;
         return this;
     }
 
@@ -484,7 +492,6 @@ public class Gui implements Listener {
                     p.updateInventory();
                 }
                 if (this.cancel) {
-                    System.out.println("Canceled the click!");
                     e.setCancelled(true);
                     p.updateInventory();
                 }
@@ -604,4 +611,3 @@ public class Gui implements Listener {
     }
 
 }
-

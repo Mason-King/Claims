@@ -23,56 +23,38 @@ public class BanGui {
     private File file = new File(main.getDataFolder().getAbsolutePath() + "/Guis/banGui.yml");
     private YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-    public Gui gui(Player p) {
+    public Gui gui(Player p, int page) {
         Gui banGui = new Gui(Utils.color(config.getString("title")), config.getInt("size"), config.getInt("size"))
                 .c();
 
         List<String> format = config.getStringList("format");
         Utils.makeFormat(config, banGui, format, "items");
 
-        Claim claim = Claim.getClaims(p).get(0);
+        Claim claim = Claim.playerClaims.get(p.getUniqueId()).get(0);
 
-        int key = 0;
-        int page = 0;
-        List<String> temp = new ArrayList<>();
-        for(int i = 0; i < 25; i++) {
-            temp.add(UUID.randomUUID().toString());
-        }
-        for(String s : temp) {
-            if(s == null) continue;
-            if(page > 0) {
-                HashMap<ItemStack, Integer> inv = Utils.getInv();
-                for(int i = 1; i <= page; i++) {
-                    for(Map.Entry e : inv.entrySet()) {
-                        System.out.println(e.getKey());
-                        System.out.println(e.getValue());
-                        banGui.setItemPage(i, (Integer) e.getValue(), (ItemStack) e.getKey());
-                    }
-                }
-            }
-            if(key == config.getInt("banSlots")) {
-                page++;
-                key = 0;
-            }
-            banGui.setItemPage(page, getBanned(s, temp.indexOf(s)));
-            key++;
+        List<String> temp = claim.banned;
+
+        int max = config.getInt("banSlots");
+
+        for(int i = (page * max); i < (page * max + max) && i < temp.size(); i++) {
+           banGui.i(getBanned(temp.get(i), temp.indexOf(temp.get(i))));
         }
 
         banGui.onClick(e -> {
-            int slot = e.getSlot();
+           int slot = e.getSlot();
 
-            int next = config.getInt("next");
-            int previous = config.getInt("previous");
+           int next = config.getInt("next");
+           int previous = config.getInt("previous");
 
-            System.out.println(next);
-            System.out.println(slot);
-
-            if(slot == next) {
-                banGui.nextPage();
-            } else if(slot == previous) {
-                banGui.prevPage();
-            }
-
+           if(slot == next) {
+               if((page + 1) * max > temp.size()) return;
+               p.closeInventory();
+               new BanGui().gui(p, page + 1).show(p);
+           } else if(slot == previous){
+               if(page - 1 < 0) return;
+               p.closeInventory();
+               new BanGui().gui(p, page - 1).show(p);
+           }
         });
 
         return banGui;

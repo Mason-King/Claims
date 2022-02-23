@@ -1,6 +1,7 @@
 package claims.Objects;
 
 import claims.Main;
+import claims.Utils.Utils;
 import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -46,6 +47,9 @@ public class Claim {
     private boolean trustedOpenDoor = false;
     private boolean trustedUse = true;
 
+    //Claim home!
+    private Location home = null;
+
     //List of all current claims!
     public static Map<Integer, Claim> claims = new HashMap<>();
     public static Map<Chunk, Claim> chunkToClaims = new HashMap<>();
@@ -54,7 +58,7 @@ public class Claim {
     private DynmapAPI api = Main.getDynmap();
 
     public Claim(int id, UUID owner, World world, String ownerName, int chunkX, int chunkZ, List<String> banned, List<String> trusted, boolean visitorBlockBreak, boolean visitorBlockPlace, boolean visitorUse, boolean visitorOpenChest, boolean visitorOpenDoor,
-                 boolean trustedBlockBreak, boolean trustedBlockPlace, boolean trustedOpenChest, boolean trustedOpenDoor, boolean trustedUse) {
+                 boolean trustedBlockBreak, boolean trustedBlockPlace, boolean trustedOpenChest, boolean trustedOpenDoor, boolean trustedUse, String location) {
         this.id = id;
         this.owner = owner;
         this.ownerName = ownerName;
@@ -77,6 +81,8 @@ public class Claim {
         this.trustedUse = trustedUse;
         this.trustedOpenChest = trustedOpenChest;
         this.trustedOpenDoor = trustedOpenDoor;
+
+        this.home = Utils.toLocation(location);
 
         MarkerSet markerset = api.getMarkerAPI().getMarkerSet(id + "");
         if (markerset == null) {
@@ -113,19 +119,27 @@ public class Claim {
         this.world = loc.getWorld();
         this.chunkX = chunk.getX();
         this.chunkZ = chunk.getZ();
+
         this.id = claims.size() + 1;
         claims.put(claims.size() + 1, this);
         chunkToClaims.put(chunk, this);
         List<Claim> temp = playerClaims.containsKey(owner) ? playerClaims.get(owner) : new ArrayList<>();
         temp.add(this);
+
+        if(playerClaims.get(owner) == null) {
+            this.home = loc;
+        } else {
+            this.home = playerClaims.get(owner).get(0).getHome();
+        }
+
         playerClaims.put(owner.getUniqueId(), temp);
+
 
         MarkerSet markerset = api.getMarkerAPI().getMarkerSet(id + "");
         if (markerset == null) {
             markerset = api.getMarkerAPI().createMarkerSet(id + "", ownerName, null, true);
         }
-        int cornerAX = chunkX * 17, cornerAZ = chunkZ * 16, cornerBX = cornerAX + 16, cornerBZ = cornerAZ + 16;
-
+        int cornerAX = chunkX * 16, cornerAZ = chunkZ * 16, cornerBX = cornerAX + 16, cornerBZ = cornerAZ + 16;
         double[] x = new double[] {cornerAX, cornerBX};
         double[] z = new double[] {cornerAZ, cornerBZ};
         AreaMarker marker = null;
@@ -134,7 +148,7 @@ public class Claim {
                 marker = m;
             }
         }
-        if(marker == null) {
+        while(marker == null) {
             marker = markerset.createAreaMarker(id + "", ownerName, true,
                     world.getName(), x, z, false);
         }
@@ -153,6 +167,14 @@ public class Claim {
             if(claim.isBanned(target)) continue;
             claim.banPlayer(target);
         }
+    }
+
+    public Location getHome() {
+        return home;
+    }
+
+    public void setHome(Location loc) {
+        this.home = loc;
     }
 
     public static Claim getClaimAt(World world, int x, int z) {
@@ -314,7 +336,43 @@ public class Claim {
         playerClaims.remove(owner);
         playerClaims.put(owner, temp);
 
-        this.unclaimed = b;
+        File file = new File(main.getDataFolder() + "/claims.yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+
+        config.set("claims." + this.id, null);
+
+        try {
+            config.save(file);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        this.id = 0;
+        this.owner = null;
+        this.ownerName = null;
+        this.chunkX = 0;
+        this.chunkZ = 0;
+        this.world = null;
+        this.chunk = null;
+        this.chunkLocation = null;
+        this.banned = null;
+        this.trusted = null;
+
+        this.visitorBlockBreak = false;
+        this.visitorBlockPlace = false;
+        this.visitorUse = false;
+        this.visitorOpenChest = false;
+        this.visitorOpenDoor = false;
+
+        this.trustedBlockBreak = false;
+        this.trustedBlockPlace = false;
+        this.trustedUse = false;
+        this.trustedOpenChest = false;
+        this.trustedOpenDoor = false;
+
+        this.home = null;
+
+
     }
 
     public void visitorBlockBreak(Boolean b) {

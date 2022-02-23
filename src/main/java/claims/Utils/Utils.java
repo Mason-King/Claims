@@ -2,10 +2,7 @@ package claims.Utils;
 
 import claims.Gui.Gui;
 import claims.Objects.Claim;
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -30,65 +27,52 @@ public class Utils {
         return chunks;
     }
 
-    private static HashMap<ItemStack, Integer> inv = new HashMap<>();
+    public static HashMap<Integer, ItemStack> inv = new HashMap<>();
 
-    public static HashMap<ItemStack, Integer> getInv() {
+    public static HashMap<Integer, ItemStack> getInv() {
         return inv;
     }
 
+    public static List<String> color(List<String> list) {
+        List<String> colored = new ArrayList<>();
+        for(String s : list) {
+            colored.add(color(s));
+        }
+        return colored;
+    }
+
     public static void makeFormat(FileConfiguration config, Gui gui, List<String> toFormat, String keyForItems) {
+
         int size = gui.getInventory().getSize();
-        if (toFormat.size() == size / 9) {
-            for (int i = 0; i < (size / 9); i++) {
+        if(toFormat.size() == size / 9) {
+            for(int i = 0; i < (size / 9); i++) {
                 String s = toFormat.get(i);
-                for (int z = 0; z < 9; z++) {
+                for(int z = 0; z < 9; z++) {
                     String removeSpaces = s.replaceAll(" ", "");
                     char individual = removeSpaces.charAt(z);
-                    if (i > 0) {
-                        if (config.get(keyForItems + "." + individual) == null) {
+                    if(i > 0) {
+                        if(config.get(keyForItems + "." + individual) == null) {
                             continue;
                         } else {
-                            ItemStack stack;
-                            if(config.getInt(keyForItems + "." + individual + ".data") == 0) {
-                                stack = new ItemStack(Material.matchMaterial(config.getString(keyForItems + "." + individual + ".material")));
-                            } else {
-                                stack = new ItemStack(Material.matchMaterial(config.getString(keyForItems + "." + individual + ".material")), 1, (short) config.getInt(keyForItems + "." + individual + ".data"));
-                            }
+                            ItemStack stack = new ItemStack(Material.matchMaterial(config.getString(keyForItems + "." + individual + ".material")));
                             ItemMeta im = stack.getItemMeta();
-                            im.setDisplayName(color(config.getString(keyForItems + "." + individual + ".name")));
-                            List<String> lore = new ArrayList<>();
-                            for(String loreString : config.getStringList(keyForItems + "." + individual + ".lore")) {
-                                lore.add(color(loreString));
-                            }
-                            im.setLore(lore);
+                            im.setDisplayName(Utils.color(config.getString(keyForItems + "." + individual + ".name")));
+                            im.setLore(color(config.getStringList(keyForItems + "." + individual + ".lore")));
                             stack.setItemMeta(im);
-
-
                             gui.i((9 * i) + z, stack);
-                            inv.put(stack,(9 * i) + z );
+                            inv.put((9 * i) + z, stack);
                         }
                     } else {
-                        if (config.get(keyForItems + "." + individual) == null) {
+                        if(config.get(keyForItems + "." + individual) == null) {
                             continue;
                         } else {
-                            ItemStack stack;
-                            if(config.getInt(keyForItems + "." + individual + ".data") == 0) {
-                                stack = new ItemStack(Material.matchMaterial(config.getString(keyForItems + "." + individual + ".material")));
-                            } else {
-                                stack = new ItemStack(Material.matchMaterial(config.getString(keyForItems + "." + individual + ".material")), 1, (short) config.getInt(keyForItems + "." + individual + ".data"));
-                            }
+                            ItemStack stack = new ItemStack(Material.matchMaterial(config.getString(keyForItems + "." + individual + ".material")));
                             ItemMeta im = stack.getItemMeta();
-                            im.setDisplayName(color(config.getString(keyForItems + "." + individual + ".name")));
-                            List<String> lore = new ArrayList<>();
-                            for(String loreString : config.getStringList(keyForItems + "." + individual + ".lore")) {
-                                lore.add(color(loreString));
-                            }
-                            im.setLore(lore);
+                            im.setDisplayName(config.getString(keyForItems + "." + individual + ".name"));
+                            im.setLore(color(config.getStringList(keyForItems + "." + individual + ".lore")));
                             stack.setItemMeta(im);
-
-
                             gui.i(z, stack);
-                            inv.put(stack,(9 * i) + z );
+                            inv.put((9 * i) + z, stack);
                         }
                     }
                 }
@@ -97,7 +81,6 @@ public class Utils {
 
         }
     }
-
     public static void makeFormat(Player p, String visitor, FileConfiguration config, Gui gui, List<String> toFormat, String keyForItems) {
         int size = gui.getInventory().getSize();
         if (toFormat.size() == size / 9) {
@@ -171,6 +154,28 @@ public class Utils {
 
         }
     }
+
+    public static Location toLocation(String s) {
+        String[] split = s.split(";");
+        return new Location(Bukkit.getWorld(split[0]), Double.parseDouble(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3]));
+    }
+
+    public static String toString(Location s) {
+        return s.getWorld().getName() + ";" + s.getX() + ";" + s.getY() + ";" + s.getZ();
+    }
+
+    public static Boolean needPage(Gui gui) {
+        ItemStack[] cont = gui.getContents();
+        for(ItemStack i : cont) {
+            if(cont == null) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return true;
+    }
+
 
     public static boolean getValue(Claim claim, String visitor, String flag) {
         switch(visitor) {

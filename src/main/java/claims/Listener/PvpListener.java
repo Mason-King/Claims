@@ -12,17 +12,12 @@ public class PvpListener implements Listener {
 
     @EventHandler
     public void onHit(EntityDamageByEntityEvent e) {
-        System.out.println("ran");
-        if(!(e.getEntity() instanceof Player) && !(e.getDamager() instanceof Player)) return;
+        if(!(e.getEntity() instanceof Player) || !(e.getDamager() instanceof Player)) return;
 
         Player target = (Player) e.getEntity();
         Player damager = (Player) e.getDamager();
 
         Chunk chunk = target.getLocation().getChunk();
-
-        System.out.println(chunk);
-
-        System.out.println(Claim.chunkToClaims);
 
         if(Claim.chunkToClaims.containsKey(chunk)) { ;
             e.setCancelled(true);

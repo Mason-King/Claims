@@ -8,7 +8,9 @@ import claims.Listener.PlayerInteract;
 import claims.Listener.PlayerMove;
 import claims.Listener.PvpListener;
 import claims.Objects.Claim;
+import claims.Utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -73,14 +75,9 @@ public final class Main extends JavaPlugin {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
         if(Claim.claims == null) return;
+
         for(Map.Entry e : Claim.claims.entrySet()) {
             Claim claim = (Claim) e.getValue();
-            if(claim.isUnclaimed()) {
-                config.set("claims." + claim.getId(), null);
-                System.out.println("deleted claim!");
-                continue;
-            }
-
             config.set("claims." + claim.getId() + ".owner", claim.getOwner().toString());
             config.set("claims." + claim.getId() + ".ownerName", claim.getOwnerName());
             config.set("claims." + claim.getId() + ".world", claim.getWorld().getName());
@@ -100,6 +97,8 @@ public final class Main extends JavaPlugin {
             config.set("claims." + claim.getId() + ".visitorUse", claim.isVisitorUse());
             config.set("claims." + claim.getId() + ".visitorChestOpen", claim.isVisitorOpenChest());
             config.set("claims." + claim.getId() + ".visitorDoorOpen", claim.isVisitorOpenDoor());
+
+            config.set("claims." + claim.getId() + ".home", Utils.toString(claim.getHome()));
 
         }
 
@@ -137,7 +136,9 @@ public final class Main extends JavaPlugin {
             Boolean trustedChestOpen = config.getBoolean("claims." + key + ".trustedChestOpen");
             Boolean trustedDoorOpen = config.getBoolean("claims." + key + ".trustedDoorOpen");
 
-            Claim claim = new Claim(id, ownerId, world, ownerName, chunkX, chunkZ, banned, trusted, visitorBlockBreak, visitorBlockPlace, visitorUse, visitorChestOpen, visitorDoorOpen, trustedBlockBreak, trustedBlockPlace, trustedChestOpen, trustedDoorOpen, trustedUse);
+            String home = config.getString("claims." + key + ".home");
+
+            Claim claim = new Claim(id, ownerId, world, ownerName, chunkX, chunkZ, banned, trusted, visitorBlockBreak, visitorBlockPlace, visitorUse, visitorChestOpen, visitorDoorOpen, trustedBlockBreak, trustedBlockPlace, trustedChestOpen, trustedDoorOpen, trustedUse, home);
 
         });
 

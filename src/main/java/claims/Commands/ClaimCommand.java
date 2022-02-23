@@ -52,6 +52,7 @@ public class ClaimCommand implements CommandExecutor {
                         return false;
                     }
                     Player target = Bukkit.getPlayer(args[1]);
+                    System.out.println(Claim.getClaims(p));
                     Claim claim = Claim.getClaims(p).get(0);
 
                     if(target.getLocation().getChunk().equals(claim.getChunk())) {
@@ -78,7 +79,7 @@ public class ClaimCommand implements CommandExecutor {
                     p.sendMessage(Utils.color(main.getConfig().getString("messages.playerUnbanned").replace("{player}", target.getName())));
                 }
             } else if(args[0].equalsIgnoreCase("bans")) {
-                new BanGui().gui(p).show(p);
+                new BanGui() .gui(p, 0).show(p);
             } else if(args[0].equalsIgnoreCase("trust")) {
                 if(Bukkit.getPlayer(args[1]) == null) {
                     p.sendMessage(Utils.color(main.getConfig().getString("messages.invalidPlayer")));
@@ -90,20 +91,20 @@ public class ClaimCommand implements CommandExecutor {
                 p.sendMessage(Utils.color(main.getConfig().getString("messages.playerTrusted")));
             } else if(args[0].equalsIgnoreCase("untrust")) {
                 if(args.length < 2) {
-                    p.sendMessage(Utils.color("&c&lClaims &7| Usage msg"));
+                    p.sendMessage(Utils.color(main.getConfig().getString("messages.playerUntrusted")));
                     return false;
                 }
                 if(Bukkit.getPlayer(args[2]) == null) {
-                    p.sendMessage(Utils.color("&c&lClaims &7| Invalid player!"));
+                    p.sendMessage(Utils.color(main.getConfig().getString("messages.invalidPlayer")));
                     return false;
                 }
                 Player target = Bukkit.getPlayer(args[2]);
                 Claim claim = Claim.getClaims(p).get(0);
                 claim.untrustClaims(target);
-                p.sendMessage(Utils.color("&c&lClaims &7| You have trusted x to your claims!"));
+                p.sendMessage(Utils.color(main.getConfig().getString("messages.playerTrusted").replace("{player}", target.getName())));
             } else if(args[0].equalsIgnoreCase("flags")) {
                 if(Claim.playerClaims.get(p.getUniqueId()) == null) {
-                    p.sendMessage(Utils.color("&c&lClaims &7| No claims!"));
+                    p.sendMessage(Utils.color(main.getConfig().getString("messages.notClaimed")));
                     return false;
                 }
                 new flagsGui().gui().show(p);
@@ -111,13 +112,10 @@ public class ClaimCommand implements CommandExecutor {
                 Chunk chunk = p.getLocation().getChunk();
 
                 int minY = p.getLocation().getBlockY();
-                int radius = 3;
 
                 Particle.DustOptions dustOptions = null;
-
-
                 for(Chunk c : getChunks(chunk , 1)) {
-
+                    System.out.println(c);
                     if(Claim.chunkToClaims.get(c) != null && Claim.chunkToClaims.get(c).getOwner().equals(p.getUniqueId())) {
                         dustOptions = new Particle.DustOptions(Color.fromRGB(0, 255, 0), 1);
                     } else {
@@ -135,31 +133,27 @@ public class ClaimCommand implements CommandExecutor {
                         int z2 = (minZ + 15) - i;
 
 
-                        p.spawnParticle(Particle.REDSTONE, x1, minY, minZ, 120, dustOptions);
-                        p.spawnParticle(Particle.REDSTONE, minX , minY, z1, 120, dustOptions);
-                        p.spawnParticle(Particle.REDSTONE, x2,  minY, minZ + 15, 120, dustOptions);
-                        p.spawnParticle(Particle.REDSTONE, minX + 15, minY, z2, 120, dustOptions);
+                        p.spawnParticle(Particle.REDSTONE, x1, minY, minZ, 30, dustOptions);
+                        p.spawnParticle(Particle.REDSTONE, minX, minY, z1, 30, dustOptions);
+                        p.spawnParticle(Particle.REDSTONE, x2, minY, minZ + 15, 30, dustOptions);
+                        p.spawnParticle(Particle.REDSTONE, minX + 15, minY, z2, 30, dustOptions);
 
                     }
 
                 }
 
             } else if(args[0].equalsIgnoreCase("admin")) {
-                if(args.length == 1) {
-                    p.sendMessage(Utils.color("&c&lClaims admin command"));
-                    return false;
-                }
                 if(!p.hasPermission("claims.admin")) {
-                    p.sendMessage(Utils.color("&c&lClaims &7| Sorry, you do not have enough permission for this!"));
+                    p.sendMessage(Utils.color(main.getConfig().getString("messages.noPermission")));
                     return false;
                 } else {
                     if(args[1].equalsIgnoreCase("remove")) {
                         if(args.length < 3) {
-                            p.sendMessage(Utils.color("&c&lClaims &7| incorrect usage try : /claim admin remove <player>"));
+                            p.sendMessage(Utils.color(main.getConfig().getString("messages.adminRemove")));
                             return false;
                         } else {
                             if(Bukkit.getPlayer(args[2]) == null) {
-                                p.sendMessage(Utils.color("&c&lClaims &7| Invalid player!"));
+                                p.sendMessage(Utils.color(main.getConfig().getString("messages.invalidPlayer")));
                                 return false;
                             } else {
                                 Player target = Bukkit.getPlayer(args[2]);
@@ -167,7 +161,7 @@ public class ClaimCommand implements CommandExecutor {
                                 for(Claim claim : claims) {
                                     claim.setUnclaimed(true);
                                 }
-                                p.sendMessage(Utils.color("&c&lClaims &7| You have unclaimed all of x's claims!"));
+                                p.sendMessage(Utils.color(main.getConfig().getString("messages.adminUnclaimed".replace("{player}", target.getName()))));
                                 return false;
                             }
                         }
@@ -177,26 +171,26 @@ public class ClaimCommand implements CommandExecutor {
                         Claim claim = Claim.chunkToClaims.get(c);
 
                         if(claim == null) {
-                            p.sendMessage(Utils.color("&c&lClaims &7| Noone has claimed this land yet!"));
+                            p.sendMessage(Utils.color(main.getConfig().getString("messages.notClaimed")));
                             return false;
                         }
 
                         claim.setUnclaimed(true);
 
-                        p.sendMessage(Utils.color("&c&lClaims &7| You have unclaimed the land you are standing in"));
+                        p.sendMessage(Utils.color(main.getConfig().getString("messages.unclaimed")));
                     } else if(args[1].equalsIgnoreCase("claim")) {
                         if(args.length < 3) {
-                            p.sendMessage(Utils.color("&c&lClaims &7| Incorrect usage : try /claims admin claim <player>"));
+                            p.sendMessage(Utils.color(main.getConfig().getString("messages.adminClaim")));
                             return false;
                         } else {
                             if(Bukkit.getPlayer(args[2]) == null) {
-                                p.sendMessage(Utils.color("&c&lClaims &7| Invalid player!"));
+                                p.sendMessage(Utils.color(main.getConfig().getString("messages.invalidPlayer")));
                                 return false;
                             } else {
                                 Player target = Bukkit.getPlayer(args[2]);
                                 Claim claim = new Claim(target, p.getLocation());
 
-                                p.sendMessage(Utils.color("&c&lClaims &7| You have claimed a chunk of land for x"));
+                                p.sendMessage(Utils.color(main.getConfig().getString("messages.adminClaimed")));
                             }
                         }
                     }
