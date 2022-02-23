@@ -2,6 +2,7 @@ package claims.Commands;
 
 import Events.LandClaimEvent;
 import claims.Gui.Guis.BanGui;
+import claims.Gui.Guis.TrustedGui;
 import claims.Gui.Guis.flagsGui;
 import claims.Main;
 import claims.Objects.Claim;
@@ -41,14 +42,21 @@ public class ClaimCommand implements CommandExecutor {
         } else {
             if(args[0].equalsIgnoreCase("help")) {
                 //Claim Help message
-                for(String str : main.getConfig().getStringList("messages.helpMessage")) {
-                    p.sendMessage(Utils.color(s));
+                for(String str : main.getConfig().getStringList("messages.claimHelp")) {
+                    p.sendMessage(Utils.color(str));
                 }
                 return false;
             } else if(args[0].equalsIgnoreCase("home")) {
                 if(Claim.getClaims(p) == null) return false;
                 Claim claim = Claim.getClaims(p).get(0);
                 p.teleport(claim.getHome());
+            } else if(args[0].equalsIgnoreCase("sethome")) {
+                if(Claim.getClaims(p) == null) return false;
+                Claim claim = Claim.getClaims(p).get(0);
+                claim.setHome(p.getLocation());
+                p.sendMessage(Utils.color(main.getConfig().getString("messages.setHome")));
+            } else if(args[0].equalsIgnoreCase("trusted")) {
+                new TrustedGui().gui(p, 0).show(p);
             } else if(args[0].equalsIgnoreCase("ban")) {
                 if(args.length == 2) {
                     if(Bukkit.getPlayer(args[1]) == null) {

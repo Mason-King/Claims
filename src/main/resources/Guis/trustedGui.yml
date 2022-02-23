@@ -1,4 +1,4 @@
-title: "&lClaim bans"
+title: "&lClaim Trusted"
 size: 45
 format:
   - '! ! ! ! ! ! ! ! !'
@@ -8,7 +8,7 @@ format:
   - '! ! ! < ! > ! ! !'
 
 #How many ban slots there are, by default there are 22 #
-banSlots: 22
+trustedSlots: 22
 
 next: 41
 previous: 39
@@ -28,10 +28,10 @@ items:
     name: "&c&lNext Page"
     lore: ""
 
-banItem:
+trustedItem:
   material: PLAYER_HEAD
   name: "&c&l{player}"
   lore:
-    - "&7{player} is currently &c&lBanned!"
+    - "&7{player} is currently &c&lTrusted!"
     - ""
     - "&7&o(( Click to unban ))"

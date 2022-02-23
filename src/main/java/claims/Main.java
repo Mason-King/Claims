@@ -47,6 +47,7 @@ public final class Main extends JavaPlugin {
         saveConfig();
         saveResource("claims.yml", false);
         saveResource("Guis/banGui.yml", false);
+        saveResource("Guis/trustedGui.yml", false);
         saveResource("Guis/flagsGui.yml", false);
         saveResource("Guis/trustedFlagsGui.yml", false);
         saveResource("Guis/visitorFlagsGui.yml", false);

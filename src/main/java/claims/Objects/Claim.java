@@ -48,7 +48,7 @@ public class Claim {
     private boolean trustedUse = true;
 
     //Claim home!
-    private Location home = null;
+    private Location home;
 
     //List of all current claims!
     public static Map<Integer, Claim> claims = new HashMap<>();
@@ -123,17 +123,16 @@ public class Claim {
         this.id = claims.size() + 1;
         claims.put(claims.size() + 1, this);
         chunkToClaims.put(chunk, this);
-        List<Claim> temp = playerClaims.containsKey(owner) ? playerClaims.get(owner) : new ArrayList<>();
+        List<Claim> temp = playerClaims.containsKey(owner.getUniqueId()) ? playerClaims.get(owner.getUniqueId()) : new ArrayList<>();
         temp.add(this);
-
-        if(playerClaims.get(owner) == null) {
-            this.home = loc;
-        } else {
-            this.home = playerClaims.get(owner).get(0).getHome();
-        }
 
         playerClaims.put(owner.getUniqueId(), temp);
 
+        if(temp.get(0).equals(this)) {
+           this.home = loc;
+        } else {
+            this.home = temp.get(0).getHome();
+        }
 
         MarkerSet markerset = api.getMarkerAPI().getMarkerSet(id + "");
         if (markerset == null) {
@@ -142,13 +141,9 @@ public class Claim {
         int cornerAX = chunkX * 16, cornerAZ = chunkZ * 16, cornerBX = cornerAX + 16, cornerBZ = cornerAZ + 16;
         double[] x = new double[] {cornerAX, cornerBX};
         double[] z = new double[] {cornerAZ, cornerBZ};
-        AreaMarker marker = null;
-        for(AreaMarker m : markerset.getAreaMarkers()) {
-            if(m.getMarkerID().equals(id)) {
-                marker = m;
-            }
-        }
-        while(marker == null) {
+        AreaMarker marker = markerset.findAreaMarker(id + "");
+        if(marker == null) {
+            System.out.println(id);
             marker = markerset.createAreaMarker(id + "", ownerName, true,
                     world.getName(), x, z, false);
         }
@@ -170,7 +165,7 @@ public class Claim {
     }
 
     public Location getHome() {
-        return home;
+        return this.home;
     }
 
     public void setHome(Location loc) {
@@ -197,8 +192,6 @@ public class Claim {
             c.setTrustedUse(mainClaim.trustedUse);
             c.setTrustedBlockBreak(mainClaim.trustedBlockBreak);
 
-            System.out.println(mainClaim.isVisitorBlockBreak());
-            System.out.println(c.isVisitorBlockBreak());
         }
     }
 
