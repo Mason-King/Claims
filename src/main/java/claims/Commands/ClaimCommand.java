@@ -45,6 +45,10 @@ public class ClaimCommand implements CommandExecutor {
                     p.sendMessage(Utils.color(s));
                 }
                 return false;
+            } else if(args[0].equalsIgnoreCase("home")) {
+                if(Claim.getClaims(p) == null) return false;
+                Claim claim = Claim.getClaims(p).get(0);
+                p.teleport(claim.getHome());
             } else if(args[0].equalsIgnoreCase("ban")) {
                 if(args.length == 2) {
                     if(Bukkit.getPlayer(args[1]) == null) {
