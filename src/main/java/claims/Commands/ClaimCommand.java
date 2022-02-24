@@ -27,7 +27,8 @@ public class ClaimCommand implements CommandExecutor {
         if(args.length == 0) {
             Chunk c = p.getWorld().getChunkAt(p.getLocation());
             if(Claim.chunkToClaims.containsKey(c)) {
-                p.sendMessage(Utils.color(main.getConfig().getString("messages.alreadyClaimed")));
+                p.sendMessage(Utils.color(main.getConfig().getString("messages.alreadyClaimed")
+                        .replace("{player}", Claim.chunkToClaims.get(c).getOwnerName())));
 
                 return false;
             }

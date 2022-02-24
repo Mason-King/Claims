@@ -2,7 +2,7 @@
 #Developed by Mason King#9052
 
 messages:
-  alreadyClaimed: "&c&lClaims &7| This claim is already claimed!"
+  alreadyClaimed: "&c&lClaims &7| This claim is already claimed by {player}!"
   claimed: "&c&lClaims &7| You just claimed a chunk of land!"
   claimHelp:
     - "&7&m---------- &c&lClaims &7----------"
