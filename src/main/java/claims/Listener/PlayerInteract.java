@@ -67,7 +67,6 @@ public class PlayerInteract implements Listener {
                 }
             }
         } else {
-            System.out.println("here?");
             return;
         }
 

@@ -65,7 +65,6 @@ public class ClaimCommand implements CommandExecutor {
                         return false;
                     }
                     Player target = Bukkit.getPlayer(args[1]);
-                    System.out.println(Claim.getClaims(p));
                     Claim claim = Claim.getClaims(p).get(0);
 
                     if(target.getLocation().getChunk().equals(claim.getChunk())) {
@@ -128,7 +127,6 @@ public class ClaimCommand implements CommandExecutor {
 
                 Particle.DustOptions dustOptions = null;
                 for(Chunk c : getChunks(chunk , 1)) {
-                    System.out.println(c);
                     if(Claim.chunkToClaims.get(c) != null && Claim.chunkToClaims.get(c).getOwner().equals(p.getUniqueId())) {
                         dustOptions = new Particle.DustOptions(Color.fromRGB(0, 255, 0), 1);
                     } else {

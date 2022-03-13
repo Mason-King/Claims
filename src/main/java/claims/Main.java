@@ -143,7 +143,6 @@ public final class Main extends JavaPlugin {
 
         });
 
-        System.out.println(Claim.playerClaims);
     }
 
     public static DynmapAPI getDynmap() {

@@ -163,9 +163,6 @@ public class Gui implements Listener {
     public Gui prevPage() {
         if (page > 0) {
             page--;
-            for(ItemStack i : items) {
-                System.out.println(i);
-            }
             for (int i = 0; i < invsize; i++) {
                 getInventory().setItem(i, items[i + (page * invsize)]);
             }

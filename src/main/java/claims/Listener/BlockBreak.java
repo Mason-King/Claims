@@ -25,7 +25,6 @@ public class BlockBreak implements Listener {
     @EventHandler (priority = EventPriority.LOWEST)
     public void onBreak(BlockBreakEvent e) {
         Player p = (Player) e.getPlayer();
-        System.out.println("ni");
 
 
         Chunk c = e.getBlock().getChunk();

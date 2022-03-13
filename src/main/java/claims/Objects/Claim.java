@@ -143,7 +143,6 @@ public class Claim {
         double[] z = new double[] {cornerAZ, cornerBZ};
         AreaMarker marker = markerset.findAreaMarker(id + "");
         if(marker == null) {
-            System.out.println(id);
             marker = markerset.createAreaMarker(id + "", ownerName, true,
                     world.getName(), x, z, false);
         }
@@ -399,7 +398,6 @@ public class Claim {
     }
 
     public void trustedBlockBreak(Boolean b) {
-        System.out.println(playerClaims.get(owner));
         for(Claim c : playerClaims.get(owner)) {
             c.setTrustedBlockBreak(b);
         }

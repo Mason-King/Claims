@@ -28,7 +28,6 @@ public class PlayerMove implements Listener {
             Claim fromClaim = Claim.chunkToClaims.get(from);
 
             if(fromClaim == null && toClaim != null) {
-                System.out.println("entering");
                 ClaimEnterEvent claimEnterEvent = new ClaimEnterEvent(p, e.getFrom(), e.getTo(), toClaim);
                 Bukkit.getPluginManager().callEvent(claimEnterEvent);
             } else if(toClaim == null && fromClaim != null) {
@@ -45,21 +44,6 @@ public class PlayerMove implements Listener {
             p.sendMessage(Utils.color("&c&lClaims &7| You have been banned from this claim!"));
         }
 
-    }
-
-    @EventHandler
-    public void onEnter(ClaimEnterEvent e) {
-        System.out.println("It rand!");
-    }
-
-    @EventHandler
-    public void onClaim(LandClaimEvent e) {
-        System.out.println("claimed some land!");
-    }
-
-    @EventHandler
-    public void onExit(ClaimExitEvent e) {
-        System.out.println("left the claim fag!");
     }
 
 
